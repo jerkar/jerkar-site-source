@@ -1,0 +1,17 @@
+org.jerkar.api.crypto.pgp
+org.jerkar.api.depmanagement
+org.jerkar.api.file
+org.jerkar.api.ide.eclipse
+org.jerkar.api.java
+org.jerkar.api.java.build
+org.jerkar.api.java.junit
+org.jerkar.api.system
+org.jerkar.api.tooling
+org.jerkar.api.utils
+org.jerkar.plugins.jacoco
+org.jerkar.plugins.sonar
+org.jerkar.tool
+org.jerkar.tool.builtins.eclipse
+org.jerkar.tool.builtins.idea
+org.jerkar.tool.builtins.javabuild
+org.jerkar.tool.builtins.javabuild.jee

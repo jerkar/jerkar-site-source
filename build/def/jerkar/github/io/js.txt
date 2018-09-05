@@ -1,0 +1,17 @@
+<script>
+function jerkarMoveTo(title, level) {
+    var elemType = 'h'+level;
+    var elems = $(elemType);
+    var elem;
+    for (var i = 0; i < elems.length; i++) {
+    	var candidate = elems[i];
+    	if (candidate.outerText ===  title) {
+    		elem = candidate;
+    		break;
+    	}
+    }
+    $('html, body').animate({
+        scrollTop: $(elem).offset().top -50
+    }, 200);
+}
+</script>

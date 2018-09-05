@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Tell me more</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A powerfull pure Java build and automation tool">
+    <meta name="author" content="Jerome Angibaud">
+    <meta name="keywords" content="build,java,tool,automation,maven,ant,gradle,buildr,sbt,make,compiler,tester,jacoco,pure java build tool,java build tool,build tool,100% java build tool">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <!-- <link href="css/bootstrap.min.css" rel="stylesheet">  -->
+    <link href="css/asciidoctor.css" rel="stylesheet">
+    <link href="css/base.css" rel="stylesheet">
+    <link href="css/prettify.css" rel="stylesheet">
+    <link href="css/jerkar.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.min.js"></script>
+      
+    <![endif]-->
+    
+      <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="favicon.ico">
+  
+  	<!-- highlight.js -->
+  	<script src="js/highlight.pack.js"></script>
+	<script>hljs.initHighlightingOnLoad();</script>
+	<link rel="stylesheet" href="css/highlight-idea.css">
+	
+	<!-- sidebar css -->
+	<link href="css/sidebar.css" rel="stylesheet">
+	
+  
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand">
+          	<img style="max-width:80px;margin-top: -10px;" src="img/logo/PNG-04.png">
+          </a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="index.html">Home</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Documentation<b class="caret"></b></a>
+              <ul class="dropdown-menu">
+               <li><a href="tour.html">Tour</a></li>
+                <li><a href="documentation/latest/getting_started.html">Getting Started</a></li>
+                <li><a href="documentation/latest/reference.html">Reference Guide</a></li>
+                <li><a href="https://github.com/jerkar/jerkar-examples">Examples</a></li>
+                <li><a href="documentation/latest/faq.html">Frequently Asked Questions</a></li>
+                <li><a href="javadoc/latest/index.html">Javadoc</a></li>
+              </ul>
+            </li>
+            <li><a href="about.html">About</a></li>
+          </ul>
+        </div>
+       
+        
+      </div>
+    </div>
+    <div class="container">
+	<p>
+	<h2>What is it ?</h2><p><strong>Jerkar</strong> is a Java build tool ala <strong><em>Gradle</em></strong>, <strong><em>Ant/Ivy</em></strong> or <strong><em>Maven</em></strong>. It differs from the others in that it requires <strong>pure Java code</strong> instead of XML files or dynamic language scripts to describe builds.</p><h2>Into the box</h2>
+<ul>
+  <li>Complete Java build tool : Java compilation, resources processing, test execution/reporting, jar/war packaging</li>
+  <li>Powerful dependency management fully compliant with <em>Maven</em> and <em>Ivy</em></li>
+  <li>Powerful multi-project support</li>
+  <li>Plugable architecture with builtin plugins for <em>Eclipse</em>, <em>IntelliJ</em>, <em>Jacoco</em> and <em>SonarQube</em></li>
+  <li>Multi-techno support for building projects embedding any other technology than Java.</li>
+  <li>Swiss-knife library for performing all kind of build related stuff as file and I/O manipulation, logging, PGP signing, external tool launcher, ...</li>
+  <li>Multi-level configuration to fit in enterprise environment</li>
+  <li>Hierarchical logs</li>
+  <li>Ability to rely on convention only (no build script needed at all) or get build information from IDE meta-data</li>
+  <li>Facility to migrate <em>Maven</em> projects</li>
+  <li>Scaffolding feature for creating projects from scratch</li>
+</ul><p>Also as an <strong>automation tool</strong> Jerkar provides :</p>
+<ul>
+  <li>The ability to treat Java sources as scripts : Java sources are <strong>compiled on-the-fly</strong> prior to be instantiated then method invoked</li>
+  <li><strong>full dependency handling</strong> to compile scripts : script dependencies can be made on Maven repositories, local jars or external projects</li>
+</ul><h2>Motivation</h2><p>As a <strong>Java developer</strong> you may have already been frustrated of not being able to write your build scripts with your favorite language and, moreover, with the <strong>same language as the project to build</strong>.<br/>Indeed most of mainstream and JVM languages have first class build tool where definitions are expressed using the language itself : <strong>Gradle</strong> for <strong>Groovy</strong>, <strong>Nodejs</strong> based tools for <strong>Javascript</strong>, <strong>SBT</strong> for <strong>Scala</strong>, <strong>PyBuilder</strong> for <strong>Python</strong>, <strong>Rake</strong> for <strong>Ruby</strong>, <strong>Leiningen</strong> for <strong>Clojure</strong>, <strong>Kobalt</strong> for <strong>Kotlin</strong> ...</p><p><strong>Jerkar</strong> purposes to fill the gap by providing a <strong>full-featured build tool</strong> allowing Java developers to build their projects by just writing <strong>regular Java classes</strong> as they are so familiar with. </p><h3>Benefits</h3><p>As said, with Jerkar, build definitions are <strong>plain old java classes</strong>. This bare metal approach brings concrete benefits :</p>
+<ul>
+  <li>for Java developers, it's <strong>trivial to add logic</strong> in build scripts</li>
+  <li>when editing build definition, Java developers leverage of <strong>compilation</strong>, <strong>code-completion</strong> and <strong>debug</strong> facilities provided by their <strong>IDE</strong></li>
+  <li>Java developers have <strong>no extra language</strong> or <strong>XML soup</strong> to master</li>
+  <li>build definitions can be <strong>launched/debugged</strong> directly from the IDE as any class providing a Main method</li>
+  <li>the tool is quite <strong>simple and fast</strong> : in essence, Jerkar engine simply performs direct method invocations on build classes. <strong>No black box</strong> : it's quite easy to discover what the build is actually doing under the hood. <strong>Jerkar source code and javadoc</strong> are a primary source of documentation.</li>
+  <li>scripts can directly leverage of any Java <strong>3rd party libraries</strong> without needing to wrap it in a plugin or a specific component</li>
+  <li>it's straightforward to <strong>extend</strong></li>
+  <li><strong>refactoring</strong> build definition is easy and safe (thanks to statically typed nature of Java)</li>
+  <li>build definitions leverage the regular Java mechanisms (Inheritance, composition, jar module dependency) to <strong>re-use build elements</strong> or share settings</li>
+</ul><h2>See it !</h2><p>You just need to add such a class in your project in order to make it buildable by Jerkar. To build a project, just execute <code>jerkar</code> in a shell at its root folder. </p>
+<div class="container">
+	<div class="col-md-6">
+<pre><code>
+class BuildSampleClassic extends JkJavaBuild {
+	
+    @Override protected JkDependencies dependencies() {
+        return JkDependencies.builder() 
+            .on(GUAVA, "18.0")  
+            .on(JERSEY_SERVER, "1.19")
+            .on("com.orientechnologies:orientdb-client:2.0.8")
+            .on(JUNIT, "4.11").scope(TEST)
+            .on(MOCKITO_ALL, "1.9.5").scope(TEST).build();
+    }
+    
+    public static void main(String[] args) {
+        JkInit.instanceOf(BuildSampleClassic.class, args).doDefault();
+    }	
+}
+</code></pre>
+	<legend class="small">No more is necessary for building and publishing your artifact. Group and artifact name are inferred from the project folder name and version is defaulted to 'trunk-SNAPSHOT' unless injected at invocation time. <br/>
+	It's possible to launch build class directly within the IDE thanks to the main method.</legend>
+	</div>
+	<div class="col-md-6">
+<pre><code>
+class MavenStyleBuild extends JkJavaBuild {
+	
+    @Override public JkModuleId moduleId() {
+        return JkModuleId.of("org.jerkar", "script-samples");
+    }
+
+    @Override protected JkVersion version() {
+        return JkVersion.name("0.3-SNAPSHOT");
+    }
+
+    @Override protected JkDependencies dependencies() {
+        return JkDependencies.builder()
+            .on(GUAVA, "18.0") 
+            .on(JERSEY_SERVER, "1.19")
+            .on("com.orientechnologies:orientdb-client:2.0.8")
+            .on(JUNIT, "4.11").scope(TEST)
+            .on(MOCKITO_ALL, "1.9.5").scope(TEST).build();
+    }
+
+}
+</code></pre>
+	<legend class="small">Same as previous but explicitly define group, artifact and current version.</legend> 
+	</div>
+	<div class="col-md-6">
+<pre><code>
+class AntStyleBuild extends JkBuild {
+	
+    String name = "myProject";
+    File src = file("src");
+    File buildDir = file("build/output");
+    File classDir = new File(buildDir, "classes");
+    JkClasspath classpath = JkClasspath.of(baseDir().include("libs/*.jar"));
+    File reportDir = new File(buildDir, "junitRreport");
+	
+    @Override public void doDefault() {
+        clean();compile();test();
+    }
+	
+    public void compile() {
+        JkJavaCompiler.outputtingIn(classDir).withClasspath(classpath).andSourceDir(src).compile();
+        JkFileTree.of(src).exclude("**/*.java").copyTo(classDir);
+    }
+		
+    public void test() {
+        JkUnit.of(classpath.and(classDir))
+            .withClassesToTest(JkFileTree.of(classDir).include("**/*Test.class"))
+            .withReportDir(reportDir).run();
+    }
+
+}
+</code></pre>
+	<legend class="small">This build class does not extend JkJavaBuild. As such it explicitly defines what does the build.</legend> 
+	</div>
+	<div class="col-md-6">
+<pre><code>
+</code></pre>
+	<legend class="small">If the project embeds all its dependency jar files locally, no build class/configuration is needed at all :-)</legend>
+	</div>
+</div><p>Plugin mechanism allows to add behavior without modifying build classes. <code>jerkar sonar# jacoco# doPublish</code> processes test coverage along SonarQube analysis prior publishing artifacts. </p><h2>Multi-techno projects</h2><p>Beside <strong>building Java projects</strong>, Jerkar can be used for <strong>any automation purpose</strong>, for example, <a href="https://github.com/jerkar/jerkar.github.io/blob/master/_jbake-site-sources/build/def/jerkar/github/io/SiteBuild.java">Jerkar is used</a> to generate this site.</p><p>For building <strong>multi-techno</strong> projects embedding other technologies than java, we suggest the following approach : </p>
+<ul>
+  <li>Each <strong>sub-project</strong> builds using its <strong>own 'native' tool</strong> (e.g. <em>nodejs/Webpack</em> for web-client, <em>Jerkar</em> for java server and <em>Haskell Cabal</em> for <em>Haskell</em> modules)</li>
+  <li><strong>Jerkar</strong> performs the <strong>master build</strong> by <strong>orchestrating sub-builds</strong> and glues all together to pack the whole distribution.</li>
+</ul><h2>Library</h2><p>Jerkar can also be <strong>embedded</strong> in your product as a simple jar library, to leverage directly the fluent API for manipulating files, launch external tools or other. It is available on <a href="http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22org.jerkar%22%20AND%20a%3A%22core%22">Maven Central</a>. </p><p>Icing on the cake : Jerkar has <strong>zero dependency</strong>.</p>
+	</p>
+
+	<hr />
+
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2014 | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.3.2</a></p>
+      </div>
+    </div>
+    
+   
+    
+    <!-- javascript =========================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="js/jquery-1.11.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/prettify.js"></script>
+ 	<script>
+ 	    lastSelect = null;
+    	$('.liexpandable').click(function(evt) {
+    		var li = $(evt.target).parents("li").first();
+    		var ul = li.find(".sub-menu").first();
+    		console.log(ul.is(':visible'));
+    		evt.stopPropagation();
+    		if (ul.is(':visible') && li.html() !== lastSelect) {
+    			lastSelect = li.html();
+    			return;
+    		}
+    		lastSelect = li.html();
+      		ul.toggle();
+ 		});
+    </script>
+    
+    <!-- Google Analytics -->
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-103449580-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+    
+  </body>
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Jerkar, the pure Java build tool</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A powerfull pure Java build and automation tool">
+    <meta name="author" content="Jerome Angibaud">
+    <meta name="keywords" content="build,java,tool,automation,maven,ant,gradle,buildr,sbt,make,compiler,tester,jacoco,pure java build tool,java build tool,build tool,100% java build tool">
+    <meta name="generator" content="JBake">
+
+    <!-- Le styles -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <!-- <link href="css/bootstrap.min.css" rel="stylesheet">  -->
+    <link href="css/asciidoctor.css" rel="stylesheet">
+    <link href="css/base.css" rel="stylesheet">
+    <link href="css/prettify.css" rel="stylesheet">
+    <link href="css/jerkar.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.min.js"></script>
+      
+    <![endif]-->
+    
+      <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="favicon.ico">
+  
+  	<!-- highlight.js -->
+  	<script src="js/highlight.pack.js"></script>
+	<script>hljs.initHighlightingOnLoad();</script>
+	<link rel="stylesheet" href="css/highlight-idea.css">
+	
+	<!-- sidebar css -->
+	<link href="css/sidebar.css" rel="stylesheet">
+	
+  
+  </head>
+  <body onload="prettyPrint()">
+    <div id="wrap">
+	
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand">
+          	<img style="max-width:80px;margin-top: -10px;" src="img/logo/PNG-04.png">
+          </a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="index.html">Home</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Documentation<b class="caret"></b></a>
+              <ul class="dropdown-menu">
+               <li><a href="tour.html">Tour</a></li>
+                <li><a href="documentation/latest/getting_started.html">Getting Started</a></li>
+                <li><a href="documentation/latest/reference.html">Reference Guide</a></li>
+                <li><a href="https://github.com/jerkar/jerkar-examples">Examples</a></li>
+                <li><a href="documentation/latest/faq.html">Frequently Asked Questions</a></li>
+                <li><a href="javadoc/latest/index.html">Javadoc</a></li>
+              </ul>
+            </li>
+            <li><a href="about.html">About</a></li>
+          </ul>
+        </div>
+       
+        
+      </div>
+    </div>
+    <div class="container">	<!--
+	<img class="center-block" src="img/underconstruction.gif"/>
+	-->
+
+	 <!-- Marketing content -->
+	 <div class="jumbotron">
+	 	<div class="container">
+	 		<div class="col-md-5">
+	 			<img src="img/logo/PNG-03.png"/>
+	 		</div>
+	 		<div class="col-md-7">
+        		<img src="img/logo/PNG-04.png"/>
+        	</div>
+        </div>
+        <br/>
+        
+        <p class="lead"><strong>Build your projects</strong> by using Java only. <strong>Drop your XML and build scripts</strong> in favor of rock solid code and enjoy.<p/>
+        <p class="lead">Jerkar brings unrivaled <strong>ease</strong>, <strong>speed</strong>, <strong>flexibility</strong>, <strong>lightness</strong>, 
+        		<strong>solidity</strong> to build <strong>Java or multi-techno projects</strong>.</p>
+        <a class="btn btn-large btn-success" href="tell-me-more.html">Tell me more</a>
+        <a class="btn btn-large btn-success" href="tour.html">Have a tour</a>
+        <a class="btn btn-large btn-success" href="documentation/latest/getting_started.html">Getting Started</a>
+        <a class="btn btn-large btn-success" href="download.html">Download</a>
+        <p></p>
+        <div class="container nopad">
+	        <div class="alert alert-info col-md-7">
+				<strong>Latest News</strong> <br/>
+				2017-08-25 : New release 0.6.0 <a href="https://github.com/jerkar/jerkar/releases"> is out !</a> <br/>
+				2016-10-14 : New release 0.5.0 <a href="https://github.com/jerkar/jerkar/releases"> is out !</a> <br/>
+				2016-12-09 : Google Protocol Buffers plugin <a href="https://github.com/jerkar/protobuf-plugin"> is out !</a> <br/>
+				2016-10-14 : New release of Eclipse plugin <a href="https://github.com/jerkar/eclipsePlugin4Jerkar"> is available</a>.<br/>
+				2016-02-17 : IntelliJ Idea plugin <a href="https://github.com/jerkar/ideaPlugin4Jerkar"> is under development</a>. <br/> 
+
+			</div>
+			<div class="alert col-md-1"></div>
+			<div class="alert alert-info col-md-4">
+				<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+				<strong>Contribute</strong> 
+				<span class="glyphicon glyphicon-star" aria-hidden="true"></span><br/>
+				Jerkar is a young project, as such there's plenty of free rooms for new comers.  <br/>
+				Also, to gain consideration Jerkar needs a growing community. Please <a href="https://github.com/jerkar/jerkar">visit the the GitHub page</a>.
+			</div>
+		</div>
+      </div>
+      
+       <div class="github hidden-phone hidden-tablet">
+		<a href="https://github.com/jerkar/jerkar"><img style="position: fixed; top: 0; right: 0; border: 0; z-index: 1050;" src="img/forkme_right_orange_ff7600.png" alt="Fork me on GitHub"></a>
+	</div>
+      
+
+		</div>
+		<div id="push"></div>
+    </div>
+    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy; 2014 | Mixed with <a href="http://getbootstrap.com/">Bootstrap v3.1.1</a> | Baked with <a href="http://jbake.org">JBake v2.3.2</a></p>
+      </div>
+    </div>
+    
+   
+    
+    <!-- javascript =========================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="js/jquery-1.11.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/prettify.js"></script>
+ 	<script>
+ 	    lastSelect = null;
+    	$('.liexpandable').click(function(evt) {
+    		var li = $(evt.target).parents("li").first();
+    		var ul = li.find(".sub-menu").first();
+    		console.log(ul.is(':visible'));
+    		evt.stopPropagation();
+    		if (ul.is(':visible') && li.html() !== lastSelect) {
+    			lastSelect = li.html();
+    			return;
+    		}
+    		lastSelect = li.html();
+      		ul.toggle();
+ 		});
+    </script>
+    
+    <!-- Google Analytics -->
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-103449580-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+    
+  </body>
+</html>
