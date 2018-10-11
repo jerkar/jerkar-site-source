@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="style/style.css" />
+    <link rel="stylesheet" href="style/menuItem.css" />
+    <title>Jerkar - Reference Guide</title>
+</head>
+
+<body>
+<div class="title">Jerkar - Reference Guide</div>
+<div style="color: #317eac; font-size: large"><strong>Author :</strong> Jérôme Angibaud</div>
+<div style="color: #317eac; font-size: large"><strong>Version :</strong> 0.7-SNAPSHOT</div>
+<br />
+<a href="#Introduction" class="menuItem1">Introduction</a><br />
+<a href="#ToolPart" class="menuItem1">1. Tool Part</a><br />
+<a href="#Lexical" class="menuItem2">1.1 Lexical</a><br />
+<a href="#InaGlance" class="menuItem2">1.2 In a Glance</a><br />
+<a href="#JerkarRuntime" class="menuItem2">1.3 Jerkar Runtime</a><br />
+<a href="#JerkarfromCommandline" class="menuItem3">1.3.1 Jerkar from Command line</a><br />
+<a href="#ParsetheCommandLine" class="menuItem4">1.3.1.1 Parse the Command Line</a><br />
+<a href="#PopulateSystemPropertiesfromConfigurationFilesandCommandline" class="menuItem4">1.3.1.2 Populate System Properties from Configuration Files and Command line</a><br />
+<a href="#Pre-process" class="menuItem4">1.3.1.3 Pre-process </a><br />
+<a href="#CompileDefClasses(defclasses)" class="menuItem4">1.3.1.4 Compile Def Classes (def classes)</a><br />
+<a href="#SelectRunClass" class="menuItem4">1.3.1.5 Select Run Class</a><br />
+<a href="#InstantiateRunClass" class="menuItem4">1.3.1.6 Instantiate Run Class</a><br />
+<a href="#InvokeCommandLineMethods" class="menuItem4">1.3.1.7 Invoke Command Line Methods</a><br />
+<a href="#ErrorHandling" class="menuItem4">1.3.1.8 Error Handling</a><br />
+<a href="#JerkarfromIDE" class="menuItem3">1.3.2 Jerkar from IDE</a><br />
+<a href="#IDEClasspathSetting" class="menuItem4">1.3.2.1 IDE Classpath Setting</a><br />
+<a href="#LaunchfromIDE" class="menuItem4">1.3.2.2 Launch from IDE</a><br />
+<a href="#EmbeddedMode" class="menuItem3">1.3.3 Embedded Mode</a><br />
+<a href="#Defaultpathsettings" class="menuItem3">1.3.4 Default path settings</a><br />
+<a href="#SpecifyJerkarUserHome" class="menuItem4">1.3.4.1 Specify Jerkar User Home</a><br />
+<a href="#SpecifythelocalRepositoryCache" class="menuItem4">1.3.4.2 Specify the local Repository Cache</a><br />
+<a href="#SeeEffectivePaths" class="menuItem4">1.3.4.3 See Effective Paths</a><br />
+<a href="#RunParameters" class="menuItem2">1.4 Run Parameters</a><br />
+<a href="#EnvironmentVariables" class="menuItem3">1.4.1 Environment Variables</a><br />
+<a href="#SystemProperties" class="menuItem3">1.4.2 System Properties</a><br />
+<a href="#JerkarOptions" class="menuItem3">1.4.3 Jerkar Options</a><br />
+<a href="#InjectOptions" class="menuItem4">1.4.3.1 Inject Options</a><br />
+<a href="#RetrieveOptionsasStringValues" class="menuItem4">1.4.3.2 Retrieve Options as String Values</a><br />
+<a href="#RetrieveOptioninRunClassFields" class="menuItem4">1.4.3.3 Retrieve Option in Run Class Fields</a><br />
+<a href="#Compositeoptions" class="menuItem4">1.4.3.4 Composite options</a><br />
+<a href="#DocumentOptions" class="menuItem4">1.4.3.5 Document Options</a><br />
+<a href="#Built-inOptions" class="menuItem4">1.4.3.6 Built-in Options</a><br />
+<a href="#Plugins" class="menuItem2">1.5 Plugins</a><br />
+<a href="#LoadPlugins" class="menuItem3">1.5.1 Load Plugins</a><br />
+<a href="#ModifyOwingJkRunInstance" class="menuItem3">1.5.2 Modify Owing JkRun Instance</a><br />
+<a href="#ConfigurePluginsinJkRunClass" class="menuItem3">1.5.3 Configure Plugins in JkRun Class</a><br />
+<a href="#DocumentPlugins" class="menuItem3">1.5.4 Document Plugins</a><br />
+<a href="#ImportExternalRuns" class="menuItem2">1.6 Import External Runs</a><br />
+<a href="#Principle" class="menuItem3">1.6.1 Principle</a><br />
+<a href="#DeclareRunImport" class="menuItem3">1.6.2 Declare Run Import</a><br />
+<a href="#OptionPropagation" class="menuItem3">1.6.3 Option Propagation</a><br />
+<a href="#Methodpropagation" class="menuItem3">1.6.4 Method propagation</a><br />
+<a href="#AccessImportedRunsProgrammatically" class="menuItem3">1.6.5 Access Imported Runs Programmatically</a><br />
+<a href="#SelfDocumentation" class="menuItem2">1.7 Self Documentation</a><br />
+<a href="#LibraryPart" class="menuItem1">2. Library Part</a><br />
+<a href="#Files" class="menuItem2">2.1 Files</a><br />
+<a href="#System" class="menuItem2">2.2 System</a><br />
+<a href="#DependencyManagement(OutDated)" class="menuItem2">2.3 Dependency Management (Out Dated)</a><br />
+<a href="#Whatisadependency?" class="menuItem3">2.3.1 What is a dependency ?</a><br />
+<a href="#Whatisascope?" class="menuItem3">2.3.2 What is a scope ?</a><br />
+<a href="#Defineasetofdependencies" class="menuItem3">2.3.3 Define a set of dependencies</a><br />
+<a href="#Definescopes" class="menuItem4">2.3.3.1 Define scopes</a><br />
+<a href="#Definingdifferenttypeofdependencies" class="menuItem4">2.3.3.2 Defining different type of dependencies</a><br />
+<a href="#Dependenciesonlocalfiles" class="menuItem5">2.3.3.2.1 Dependencies on local files</a><br />
+<a href="#Dependenciesonfilesproducedbycomputation" class="menuItem5">2.3.3.2.2 Dependencies on files produced by computation</a><br />
+<a href="#DependenciesonModule" class="menuItem5">2.3.3.2.3 Dependencies on Module</a><br />
+<a href="#BindDependenciestoScopes" class="menuItem3">2.3.4 Bind Dependencies to Scopes</a><br />
+<a href="#Simplescopes" class="menuItem4">2.3.4.1 Simple scopes</a><br />
+<a href="#ScopeMapping" class="menuItem4">2.3.4.2 Scope Mapping</a><br />
+<a href="#DefaultScopeMapping" class="menuItem4">2.3.4.3 Default Scope Mapping</a><br />
+<a href="#ExcludingModulefromtheDependencyTree" class="menuItem4">2.3.4.4 Excluding Module from the Dependency Tree</a><br />
+<a href="#Displayingdependencytree" class="menuItem3">2.3.5 Displaying dependency tree</a><br />
+<a href="#Publicationonbinaryrepositories(OutDated)" class="menuItem2">2.4 Publication on binary repositories (Out Dated)</a><br />
+<a href="#PublishtoaMavenrepository" class="menuItem3">2.4.1 Publish to a Maven repository</a><br />
+<a href="#UsingrawAPI" class="menuItem4">2.4.1.1 Using raw API</a><br />
+<a href="#UsingJkJavaBuildtemplate" class="menuItem4">2.4.1.2 Using JkJavaBuild template</a><br />
+<a href="#Usingdefaults" class="menuItem5">2.4.1.2.1 Using defaults</a><br />
+<a href="#Usingapoolofrepositories" class="menuItem5">2.4.1.2.2 Using a pool of repositories</a><br />
+<a href="#PublishtoaIvyrepository" class="menuItem3">2.4.2 Publish to a Ivy repository</a><br />
+<a href="#Publishtoapubliccentralrepositoty" class="menuItem3">2.4.3 Publish to a public central repositoty</a><a name="Introduction"></a>
+<h1>Introduction</h1>
+<p>This document stands for reference guide and provides details about Jerkar behaviour. If you are looking for
+how exactly Jerkar behaves or you want to get a pretty exhaustive list of Jerkar features, you are in the right place.</p>
+<p>However, a document can not replace a source code or API for exhaustion. Jerkar philosophy is to be <strong>as transparent and
+easy to master as possible</strong>. We hope that no user will ever feel the need to buy some trainings or books to master it.</p>
+<p>The source code has been written with intelligibility in mind in order to navigate easily from the user code
+to the Jerkar engine room. For Java developers, reading source code and placing break points troubleshoots faster
+than documentation/support most of the time.</p>
+<p><strong>What is Jerkar ?</strong></p>
+<p>Jerkar contains both a library and a tool.</p>
+<p>Library is for dealing with file sets, compilations, dependency management, testing,
+external processes, crypto signatures, ... in a word, all regular things you need to build/publish projects and especially Java projects.</p>
+<p>Tool is intended to execute Java source code from the console in a parameterizable way. Its architecture eases the
+reuse of build elements (logic, settings, doc, ...) across projects.</p>
+<p>Although library and tool are bundled in the same jar, the library does not depend on the tool at all. It can be understood
+on its own without any knowledge of the tool part. If you are only interested in the library part you can <a href="#LibraryPart">jump to this section</a>.</p>
+<p>You may ask why these two parts are not bundled in distinct jar...well, the tool is very lightweight compared
+to the lib part, so splitting drawbacks would outweigh its advantages. This decision may be reconsidered later when Jerkar will
+embrace JDK9+.</p>
+<a name="ToolPart"></a>
+<h1>1. Tool Part</h1>
+<a name="Lexical"></a>
+<h2>1.1 Lexical</h2>
+<p>The following terms are used all over this section :</p>
+<p><strong>[PROJECT DIR]</strong> : Refers to the root folder of the project to build (or to run tasks on). This is where you would put pom.xml or build.xml files.</p>
+<p><strong>[JERKAR HOME]</strong> : Refers to the folder where is intalled Jerkar. You should find <em>jerkar.bat</em> and <em>jerkar</em> shell scripts eet the root of this folder.</p>
+<p><strong>[JERKAR USER HOME]</strong> : Refers to the folder where Jerkar stores caches, binary repository and global user configuration. By default it is located at [USER DIR]/.jerkar.</p>
+<p><strong>Def classes :</strong> Java source files located under <em>[PROJECT DIR]/jerkar/def</em> compiled on the flight by Jerkar.</p>
+<p><strong>Run Classes :</strong> Classes extending <code>org.jerkar.tool.JkRun</code>. Their <em>run methods</em> can be invoked and
+their pubic fields set from the command line. Generally <em>def classes</em> contains one <em>run class</em> though there can be many or
+none.</p>
+<p><strong>Run Classpath :</strong> Classpath on which depends <em>def classes</em> to get compiled and <em>run classes</em> to be executed.
+By default, it consists in <em>Jerkar</em> core classes. it can be augmented with any third party lib or run classpath coming
+from another project.
+Once <em>def classes</em> sources have been compiled, <em>run classpath</em> is augmented with their <em>.class</em> counterpart.</p>
+<p><strong>Run Methods :</strong> Java methods member of <em>run classes</em> and invokable from Jerkar command line.
+They must be public zero-args instance methods returning void.</p>
+<p><strong>Options :</strong> This is a set of key-value used to inject parameters. Options can be mentioned
+as command line arguments, stored in specific files or hard coded in <em>run classes</em>.</p>
+<a name="InaGlance"></a>
+<h2>1.2 In a Glance</h2>
+<p>The Jerkar tool consists in an engine able to run Java source code or Java compiled code from the command line.</p>
+<p>Generally this code is intended to build Java projects but it can be used for any purpose.</p>
+<p>In practice, your project has a structure respecting the following layout :</p>
+<pre><code>[Project Dir]
+   |
+   + jerkar
+      + boot             &lt;-------- Put extra jars here to augment run classpath.
+      + def
+         + MyRun.java   &lt;----- Class extending JkRun 
+         + MyUtility.java   &lt;---- Utility class consumed by MyRun
+      + output              &lt;---- Build artifacts are generated here
+   + src
+      + main
+          + java
+          + resources
+   + ...
+</code></pre>
+<p>A <em>run class</em> may look like :</p>
+<pre><code class="language-Java">import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.methods.GetMethod;
+import org.jerkar.tool.JkDoc;
+import org.jerkar.tool.JkImport;
+import org.jerkar.tool.JkRun;
+import com.google.common.base.MoreObjects;
+
+@JkImport(&quot;commons-httpclient:commons-httpclient:3.1&quot;)  // Imports 3rd party library to be used by def classes
+@JkImport(&quot;com.google.guava:guava:21.0&quot;)
+public class MyRun extends JkRun {    // The run class
+    
+    public String myParam1 = &quot;myDefault&quot;;    // Overridable by injecting options in command line
+
+    @JkDoc(&quot;Performs some tasks using http client&quot;)    // Only for self documentation purpose
+    public void myMethod1() {                   // Run method (callable from command line)
+        HttpClient client = new HttpClient();
+        GetMethod getMethod = new GetMethod(&quot;http://my.url/&quot; + myParam1);
+        ....
+    }
+    
+    public void myMethod2() {   // An other run method 
+        MyUtility.soSomething();
+        ...
+    }
+
+}
+</code></pre>
+<p>From <strong>[Project Dir]</strong>,  you can invoke any build method defined on <code>MyRun</code> class from the command line.</p>
+<p>For example, executing <code>jerkar myMethod1 myMethod2 -myParam1=foo</code> does the following :</p>
+<ol>
+<li>compile sources located in <em>jerkar/def</em> directory,</li>
+<li>instantiate a <code>MyRun</code> instance,</li>
+<li>inject <em>&quot;foo&quot;</em> in the <code>myParam1</code> field,</li>
+<li>invoke <code>myMethod1()</code>,</li>
+<li>invoke <code>myMethod2()</code>.</li>
+</ol>
+<p>If no <em>run class</em> are present in <em>def classes</em>, Jerkar picks <code>org.jerkar.tool.JkRun</code>. In despite this class
+does not provide any particular methods, you can still perform full Java builds by invoking built-in 'java' plugin
+executing <code>jerkar clean java#pack</code> (<a href="#Plugins">See Plugins</a>).</p>
+<p>Executing <code>jerkar</code> or <code>jerkar help</code> on command line displays all run methods and options for the current <em>run class</em>.</p>
+<p>The following chapters detail about how the mechanism works and what you can do with.</p>
+<a name="JerkarRuntime"></a>
+<h2>1.3 Jerkar Runtime</h2>
+<p>This chapter describes how to use Jerkar with command line and mostly what happens behind the cover when Jerkar is run.</p>
+<p>Jerkar is a pure Java application requiring <strong>JDK 8</strong>. <strong>JDK</strong> is required and <strong>JRE</strong> is not sufficient as Jerkar uses the <strong>JDK tools</strong> to compile <em>def classes</em>.</p>
+<p>Jerkar can be launched from both command line and your IDE.</p>
+<a name="JerkarfromCommandline"></a>
+<h3>1.3.1 Jerkar from Command line</h3>
+<p>To ease launching Java processes from command line, Jerkar provides shell scripts ( <a href="https://github.com/jerkar/jerkar/blob/master/org.jerkar.core/src/main/java/META-INF/bin/jerkar.bat">jerkar.bat</a> for <strong>Windows</strong>
+and <a href="https://github.com/jerkar/jerkar/blob/master/org.jerkar.core/src/main/java/META-INF/bin/jerkar">jerkar</a> for <strong>Unix</strong> ). They are located at root
+of <em>[JERKAR HOME]</em>. <em>[JERKAR HOME]</em> is supposed to be in your PATH environment variable.</p>
+<p>This script does the following :</p>
+<ol>
+<li>Find the <em>java</em> executable path : If a <code>JAVA_HOME</code> environment variable is defined then it takes the one lying in this JDK, otherwise it takes the one accessible in the <em>PATH</em> of your OS.</li>
+<li>Get java execution option : If an environment variable <code>JERKAR_OPTS</code> exists then its value is passed to the <code>java</code> command line parameters.</li>
+<li>Get the classpath in the following order :
+<ul>
+<li>all jar and zip files found under <em>[WORKING DIR]/jerkar/boot</em></li>
+<li>the <em>[JERKAR_HOME]/org.jerkar.core.jar</em> file</li>
+</ul>
+</li>
+<li>Run the <em>java</em> process for launching <code>org.jerkar.tool.Main</code> class passing the command line argument as is. This class main method does the following :
+<ol>
+<li>Parse the command line.</li>
+<li>Populate system properties from configuration files and command line.</li>
+<li>Pre-process <em>def classes</em> . In this step, <em>def class</em> code is parsed to detect 3rd party and external project imports. Imports are added to the <em>run classpath</em>.</li>
+<li>Compile <em>def classes</em> using the classpath computed in previous step.</li>
+<li>Select the <em>run class</em> to be run.</li>
+<li>Instantiate selected <em>run class</em>, inject options and bind plugins on it.</li>
+<li>Invoke methods specified in command line arguments : methods are executed in the order they appear on the command line.</li>
+</ol>
+</li>
+</ol>
+<p>The following sub-sections detail about these steps.</p>
+<a name="ParsetheCommandLine"></a>
+<h4>1.3.1.1 Parse the Command Line</h4>
+<p>Jerkar parses the command line and processes each arguments according the following pattern :</p>
+<ul>
+<li>
+<p><strong>Argument starts with <code>@</code> :</strong> This is a library import clause : the text just next to, is added to the <em>run classpath</em>.
+For example <code>jarkar myMethod @org.jerkar:an-extra-plugin:3.3</code> augments the <em>run classpath</em> with the <em>an-extra-Plugin</em> jar.
+This is similar to annotate a <em>def class</em> with <code>@JkImport(&quot;org.jerkar:an-extra-plugin:3.3&quot;)</code>.
+This is intended to modifiate behavior of <em>run class</em> by plugins dynamically.</p>
+</li>
+<li>
+<p><strong>Argument starts with <code>-</code> :</strong> This is an option declaration. The content following is is expected to be formatted as <em>optionName=optionValue</em>.
+For example, `-repo.run.url=http://my.repo.milestone/' will inject 'http://my.repo.milestone/' in the 'repo.run.url' Jerkar option.</p>
+</li>
+<li>
+<p><strong>In other cases :</strong> argument is considered as a run method name to be invoked on the <em>run class</em> instance.</p>
+</li>
+</ul>
+<a name="PopulateSystemPropertiesfromConfigurationFilesandCommandline"></a>
+<h4>1.3.1.2 Populate System Properties from Configuration Files and Command line</h4>
+<p>Jerkar loads system properties in order from :</p>
+<ul>
+<li><em>[JERKAR HOME]</em>/system.properties</li>
+<li><em>[JERKAR USER HOME]</em>/system.properties</li>
+<li>command line parsed above</li>
+</ul>
+<p>The last loaded properties override the previous ones if there is some conflicts.</p>
+<p>Jerkar follows a similar process to load options. It loads in order :</p>
+<ul>
+<li><em>[JERKAR HOME]</em>/options.properties</li>
+<li><em>[JERKAR USER HOME]</em>/options.properties</li>
+<li>command line parsed above</li>
+</ul>
+<p>The last loaded options override the previous ones if there is some conflicts.</p>
+<a name="Pre-process"></a>
+<h4>1.3.1.3 Pre-process <em>Def Class</em> Code (Import 3rd party library into <em>Run Classpath</em>)</h4>
+<p>In order to compile <em>def classes</em>, Jerkar has to compute <em>run classpath</em> first. With Jerkar you can specify run dependencies
+directly inside the source code using <code>@JkImport</code> or <code>@JkImportRun</code> annotations as shown below.</p>
+<pre><code class="language-Java">@JkImport(&quot;commons-httpclient:commons-httpclient:3.1&quot;)
+@JkImport(&quot;com.google.guava:guava:18.0&quot;)
+@JkImport(&quot;../local/library/bin&quot;)
+public class HttpClientTaskRun extends JkRun {
+
+    @JkImportRun(&quot;../another/project/using/jerkar&quot;)
+    private OtherRun otherRun;  // Run class from another project
+    
+    ...
+</code></pre>
+<p>To achieve this, Jerkar parses source code of <em>all</em> classes under <em>jerkar/def</em> and add the detected imports to the <em>run classpath</em>.
+Note that classes having a name starting by a '_' are skipped.</p>
+<p>When a dependency is expressed as a maven/ivy module, Jerkar tries to resolve it using repository url defined by in order :</p>
+<ul>
+<li>If option <code>repo.runName</code> is present and option <code>repo.${repo.runName}.url</code> is present as well, it takes the value of this property.</li>
+<li>If no url is defined as such, it takes the value of <code>repo.run.url</code> option.</li>
+<li>If this option is not set, then it takes the value of <code>repo.download.url</code> option.</li>
+<li>If the latest is not present as well, it falls back to Maven Central.</li>
+</ul>
+<p>If a repository needs credentials, you need to supply it through Jerkar options <code>repo.[repo name].username</code> and <code>repo.[repo name].password</code>.</p>
+<p>Note that you can define several urls for a <code>repo.[repo name].url</code> by separating then with coma (as <code>repo.run.url=http://my.repo1, http://my.repo2.snapshot</code>).</p>
+<p>As with other repo, if the download repository is an Ivy repo, you must prefix url with <code>ivy:</code> so for example you'll get <code>repo.run.url=ivy:file://my.ivy/repo</code>.</p>
+<a name="CompileDefClasses(defclasses)"></a>
+<h4>1.3.1.4 Compile Def Classes (def classes)</h4>
+<p>Jerkar compiles def class files prior to execute it. Def class files are expected to be in <em>[PROJECT DIR]/jerkar/def</em>.
+Classes having a name starting by a '_' are skipped.
+If this directory does not exist or does not contains java sources, the compilation is skipped.
+Compilation occurs upon the following classpath :</p>
+<ul>
+<li>Java libraries located in <em>[PROJECT DIR]/jerkar/boot</em>.</li>
+<li>org.jerkar.core.jar library</li>
+<li>Classpath defined in run classes as explained above.</li>
+</ul>
+<p>It outputs class files in <em>[PROJECT DIR]/jerkar/output/def-classes</em> directory.</p>
+<p>Jerkar uses the compiler provided by the running JDK.</p>
+<a name="SelectRunClass"></a>
+<h4>1.3.1.5 Select Run Class</h4>
+<p>Once compiled, Jerkar augments the <em>run classpath</em> with classes compiled in previous step.
+Then it selects one <em>run class</em> from <em>run classpath</em> and instantiate it.</p>
+<p>The selection logic is :</p>
+<ul>
+<li>If <code>-RunClass</code> option (shorthand <code>-RC</code>) is specified, then Jerkar selects a class having the same name or same
+short name among <em>run classes</em> present in <em>run classpath</em>.</li>
+<li>If this option is not set, Jerkar looks for a <em>run class</em> into <em>[PROJECT DIR]/jerkar/output/def-classes</em> .
+It looks in alphabetic order first then sub-package (deep first).
+This means that class <code>MyRun</code> will be selected prior <code>apackage.ARun</code>, and <code>aa.bb.MyClass</code> will be selected prior <code>ab.OtherClass</code>.</li>
+<li>If no such class found, Jerkar selects the built-in <code>org.jerkar.tool.JkRun</code> class.</li>
+</ul>
+<a name="InstantiateRunClass"></a>
+<h4>1.3.1.6 Instantiate Run Class</h4>
+<p>The run instantiation process is defined in <code>ork.jerkar.tool.JkRun#of</code> factory method. It consists in :</p>
+<ol>
+<li>Creating a new <em>run class</em> instance (Invoking default constructor).</li>
+<li>Injecting defined options in public instance fields.</li>
+<li>Invoking <code>JkRun#afterOptionsInjected</code> method on <em>run class</em>. This method might be overridden by users to configure run and plugins before they have been activated.</li>
+<li>Loading plugins defined in command line into the <em>run class</em> instance.</li>
+<li>Invoking <code>JkPlugin#activate</code> method on each loaded plugins. This method is defined by plugin authors.</li>
+<li>Invoking <code>JkRun#afterPluginsActivated</code> on <em>run class</em>. This method might be overridden by users to configure <em>run class</em> instance once plugins have been activated.</li>
+</ol>
+<a name="InvokeCommandLineMethods"></a>
+<h4>1.3.1.7 Invoke Command Line Methods</h4>
+<p>Once <em>run class</em> instantiated, Jerkar invokes instance methods mentioned in command line as <code>jerkar myFistMethod mySecondMethod ...</code>.
+Methods are invoked in order they appear in command line regardless if method is defined on the <em>run class</em> itself or in a plugin.</p>
+<p>In order a method to be considered as a <em>run method</em> (invokable from Jerkar command line), it must :</p>
+<ul>
+<li>Be public</li>
+<li>Be instance method (no static method)</li>
+<li>Accept no arguments</li>
+<li>Return void</li>
+</ul>
+<p>If Jerkar command line specifies no method, then <code>help</code> method is invoked.</p>
+<a name="ErrorHandling"></a>
+<h4>1.3.1.8 Error Handling</h4>
+<p>If an exception is thrown during the execution, Jerkar displays full stack trace on the console except if
+this is a <code>org.jerkar.api.system.JkException</code>. In this case, only the message is displayed.</p>
+<a name="JerkarfromIDE"></a>
+<h3>1.3.2 Jerkar from IDE</h3>
+<a name="IDEClasspathSetting"></a>
+<h4>1.3.2.1 IDE Classpath Setting</h4>
+<p>In order your IDE compiles and launches your <em>def classes</em>, you must ensure that project/module classpath contains :</p>
+<ul>
+<li><code>org.jerkar.core.jar</code> (found in Jerkar distrib)</li>
+<li>libs and folders mentioned in <code>@JkImport</code> annotations of your <em>def classes</em>.</li>
+<li>project/modules mentioned in <code>@JkImportRun</code> annotations of your <em>def run classes</em>.</li>
+</ul>
+<p>Plugin methods <code>eclipse#generateFiles</code> and <code>intellij#generateIml</code> achieve this for you.</p>
+<a name="LaunchfromIDE"></a>
+<h4>1.3.2.2 Launch from IDE</h4>
+<p>If launched from the IDE, <em>def classes</em> are already compiled and the classpath already set by the IDE.
+This leads in a simpler and faster process.</p>
+<p>To launch Jerkar from your IDE, you can go two ways :</p>
+<p>One is to create a main method in one of your <em>def classes</em> as below and invoke it.</p>
+<pre><code class="language-Java">public static void main(String[] args) {
+    JkInit.instanceOf(MyRun.class, args).doDefault();
+} 
+</code></pre>
+<p>The <code>JkInit#instanceOf</code> method loads options from args and instantiates <em>run classes</em>. Then user can
+configure it using hard coding prior launching any method programmatically.</p>
+<p>The other way is to launch <code>org.jerkar.tool.Main</code> method from your IDE with same arguments as you would do with command line.</p>
+<a name="EmbeddedMode"></a>
+<h3>1.3.3 Embedded Mode</h3>
+<p>When launched from command line, <em><strong>[JERKAR_HOME]/org.jerkar.core.jar</strong></em> comes after <em><strong>[WORKING_DIR]/jerkar/boot/*</strong></em> in Jerkar classpath.
+This means that if a version of Jerkar (org.jerkar.core.jar) is in this directory, the run will be processed with
+this instance of Jerkar instead of the one located in in <em>[JERKAR HOME]</em>.</p>
+<p>This is called the <strong>Embedded</strong> mode. The Jerkar tool is embded within your project so the run does not depends
+of the presence and version of Jerkar installed in the host machine.</p>
+<p>__Enable embedded mode : __</p>
+<p>To enable embedded mode :</p>
+<ol>
+<li>Copy <em><strong>[JERKAR_HOME]/org.jerkar.core.jar</strong></em> into <em><strong>[PROJECT_DIR]/jerkar/boot/*</strong></em> directory.</li>
+<li>Copy <em><strong>[JERKAR_HOME]/jerkar.bat</strong></em> and <em><strong>[JERKAR_HOME]/jerkar</strong></em> at the root of <em><strong>[PROJECT_DIR]</strong></em> (optional).</li>
+</ol>
+<p>Jerkar is provided with a <em>scaffold</em> plugin that do it for you : just execute <code>jerkar scaffold#run -scaffold#embed</code>.</p>
+<p><strong>Run in embedded mode : </strong></p>
+<p>You can go two ways :</p>
+<ul>
+<li>execute <code>jerkar myFunction ...</code> as you would do in regular mode. This works only if you have copied jerkar/jerkar.bat shell scripts into <em><strong>[PROJECT DIR]</strong></em></li>
+<li>or execute <code>java -cp jerkar/boot/* org.jerkar.tool.Main myFunction ...</code> from <em><strong>[PROJECT_DIR]</strong></em> .</li>
+</ul>
+<a name="Defaultpathsettings"></a>
+<h3>1.3.4 Default path settings</h3>
+<a name="SpecifyJerkarUserHome"></a>
+<h4>1.3.4.1 Specify Jerkar User Home</h4>
+<p>Jerkar uses user directory to store user-specific configuration and cache files, in this document we refer to this directory using [Jerkar User Home].
+By default the this directory is located at <em>[User Home]/.jerkar</em> (<em>[User Home]</em> being the path given by <code>System.getProperty(&quot;user.home&quot;);</code>.
+You can override this setting by defining the <code>JERKAR_USER_HOME</code> environment variable.
+You can get this location programmatically using <code>JkLocator.jerkarUserHome()</code> method.</p>
+<a name="SpecifythelocalRepositoryCache"></a>
+<h4>1.3.4.2 Specify the local Repository Cache</h4>
+<p>Jerkar uses <a href="http://ant.apache.org/ivy/">Apache Ivy</a> under the hood to handle module dependencies. Ivy downloads and stores locally artifacts consumed by projects.
+By default the location is <em>[JERKAR USER HOME]/cache/repo</em> but you can redefine it by defining the <code>JERKAR_REPO</code> environment variable.
+You can get this location programmatically using <code>JkLocator.jerkarRepositoryCache()</code> method.</p>
+<a name="SeeEffectivePaths"></a>
+<h4>1.3.4.3 See Effective Paths</h4>
+<p>The Jerkar displays the effective path at the very start of the process if launched with <code>-LogHeaders=true</code> option :</p>
+<p>For example, <code>jerkar help -LogHeaders</code> will output :</p>
+<pre><code> _______           _                 
+(_______)         | |                
+     _ _____  ____| |  _ _____  ____ 
+ _  | | ___ |/ ___) |_/ |____ |/ ___)
+| |_| | ____| |   |  _ (/ ___ | |    
+ \___/|_____)_|   |_| \_)_____|_|
+                                     The 100% Java build tool.
+
+Working Directory : C:\Users\me\IdeaProjects\playground\jerkar-sample
+Java Home : C:\Program Files (x86)\Java\jdk1.8.0_121\jre
+Java Version : 1.8.0_121, Oracle Corporation
+Jerkar Version : Xxxxx
+Jerkar Home : C:\Users\me\IdeaProjects\jerkar\org.jerkar.core\jerkar\output\distrib
+Jerkar User Home : C:\Users\angibaudj\.jerkar
+Jerkar Repository Cache : C:\Users\me\.jerkar\cache\repo
+
+...
+</code></pre>
+<a name="RunParameters"></a>
+<h2>1.4 Run Parameters</h2>
+<p>Jerkar runs are parameterizable. One can retrieve values defined at runtime by reading :</p>
+<ul>
+<li>environment variables</li>
+<li>system properties</li>
+<li>Jerkar options</li>
+</ul>
+<a name="EnvironmentVariables"></a>
+<h3>1.4.1 Environment Variables</h3>
+<p>There is nothing specific to Jerkar. Just set the environment variables as you usually do on your OS and get
+the value using the standard <code>System#getenv</code> method.</p>
+<a name="SystemProperties"></a>
+<h3>1.4.2 System Properties</h3>
+<p>As for environment variables, one can read system properties using the standard <code>System#getProperty</code> method.</p>
+<p>Jerkar proposes 3 ways of injecting system properties. They are considered in following order :</p>
+<ul>
+<li>Properties mentioned in Jerkar command line as <code>Jerkar doDefault -DmyProperty=myValue</code>.</li>
+<li>Properties mentioned in <em><strong>[Jerkar User Home]/system.properties</strong></em> file.</li>
+<li>Properties mentioned in <em><strong>[Jerkar Home]/system.properties</strong></em> file.
+Note that if you are running Jerkar in embedded mode, the <em><strong>[Jerkar Home]/system.properties</strong></em> file will not be taken in account but <em><strong>[project dir]/jerkar/boot/system.properties</strong></em>.</li>
+</ul>
+<p>In every case, defined system properties are injected after the creation of the java process (via <code>System#setProperty</code> method).</p>
+<a name="JerkarOptions"></a>
+<h3>1.4.3 Jerkar Options</h3>
+<p>Jerkar options are similar to system properties as it stands for a set of key/value.</p>
+<p>Options are globally available in all run classes but can be retrieve in a static typed way (injected in <em>run class</em> fields)
+or as set of key/string value.</p>
+<a name="InjectOptions"></a>
+<h4>1.4.3.1 Inject Options</h4>
+<p>Jerkar proposes 3 ways to inject options. They are considered in following order :</p>
+<ul>
+<li>Options mentioned in Jerkar command line as <code>Jerkar doDefault -myOption=myValue</code>.</li>
+<li>Options mentioned in <em><strong>[Jerkar User Home]/options.properties</strong></em> file.</li>
+<li>Options mentioned in <em><strong>[Jerkar Home]/options.properties</strong></em> file.
+Note that if you are running Jerkar in embedded mode, the <em><strong>[Jerkar Home]/options.properties</strong></em> file will not be taken in account but <em><strong>[project dir]/jerkar/boot/options.properties</strong></em>.</li>
+</ul>
+<p>Note for boolean options, when no value is specified, <code>true</code> will be used as default.</p>
+<a name="RetrieveOptionsasStringValues"></a>
+<h4>1.4.3.2 Retrieve Options as String Values</h4>
+<p>You can retrieve string values using the <code>JkOptions</code> API providing convenient static methods as <code>JkOptions#get</code>, <code>JkOptions#getAll</code> or <code>JkOptions#getAllStartingWith(String prefix)</code>.</p>
+<p>This way you only get the string literal value for the option and you have to parse it if the intended type was a boolean or a number.</p>
+<a name="RetrieveOptioninRunClassFields"></a>
+<h4>1.4.3.3 Retrieve Option in Run Class Fields</h4>
+<p>You can retrieve options just by declaring fields in <em>run classes</em>.
+All public non-final instance fields of the invoked <em>run class</em>, are likely to be injected as an option.</p>
+<p>For example, if you declare a field like :</p>
+<pre><code>class MyRun extends JkRun {
+   public int size = 10;
+   ...
+}
+</code></pre>
+<p>Then you can override the value by mentioning in command line <code>jerkar doSomething -size=5</code>.</p>
+<p>Note that the injected string value will be automatically converted to the target type.</p>
+<p>Handled types are : <em>String</em>, <em>all primitive types (and their wrappers)</em>, <em>enum</em>, <em>File</em> and <em>composite object</em>.
+If the value is not parsable to the target type, run fails.</p>
+<p>To get a precise idea on how types are converted see <a href="https://github.com/jerkar/jerkar/blob/master/org.jerkar.core/src/main/java/org/jerkar/tool/OptionInjector.java">this code</a>.</p>
+<a name="Compositeoptions"></a>
+<h4>1.4.3.4 Composite options</h4>
+<p>Composite options are a way to structure your options. Say that you want to configure some server access with url, userName and passwsord.
+You can group all these information into a single object as :</p>
+<pre><code class="language-Java">public class Server {
+    public String url;
+    public String userName;
+    public String password;
+    // ...
+}
+</code></pre>
+<p>Declare a Server field in your run class :</p>
+<pre><code class="language-Java">class MyRun extends JkRun {
+   public Server deployServer = new Server();
+   ...
+}
+</code></pre>
+<p>Then you can inject the server object using following options :</p>
+<pre><code>deployServer.url=http:/myServer:8090/to
+deployServer.username=myUsername
+deployServer.password=myPassword
+</code></pre>
+<a name="DocumentOptions"></a>
+<h4>1.4.3.5 Document Options</h4>
+<p>If you want your option been displayed when invoking <code>jerkar help</code> you need to annotate it with <code>@JkDoc</code>.</p>
+<p>For example :</p>
+<pre><code>@JkDoc(&quot;Make the test run in a forked process&quot;)
+public boolean forkTests = false;
+</code></pre>
+<a name="Built-inOptions"></a>
+<h4>1.4.3.6 Built-in Options</h4>
+<p>Jerkar defines some built-in options that are used by the engine itself. Unlike regular options, they respect an UpperCamelCase naming
+convention :</p>
+<ul>
+<li>-LogVerbose (shorthand -LV) : if true, logs will display 'trace' level logs.</li>
+<li>-LogHeaders (shorthand -LH) : if true, meta-information about the run creation itself and method execution will be logged.</li>
+<li>-LogMaxLength (shorthand -LML) : Console will do a carriage return automatically after N characters are outputted in a single line (ex : -LML=120).</li>
+<li>-RunClass (shorthand -RC) : Force to use the specified class as the <em>run class</em> to instantiate. It can be the short name of the class (without package prefix).</li>
+</ul>
+<a name="Plugins"></a>
+<h2>1.5 Plugins</h2>
+<p>Jerkar provides a plugable architecture. In Jerkar, a plugin is a class extending <code>org.jerkar.tool.JkPlugin</code> and named as <em>JkPlugin[PluginName]</em>.
+The plugin name is inferred from Plugin class name.</p>
+<p>Each plugin instance is owned by a JkRun object, and can access to it through <code>JkPlugin#run</code> protected field.</p>
+<p>Plugins has 3 capabilities :</p>
+<ul>
+<li>Access to their owning JkRun instance (so potentially modify it, load/modify other plugins)</li>
+<li>Expose <em>run methods</em> and <em>options</em> to command line.</li>
+<li>Provide self documentation.</li>
+</ul>
+<p>Jerkar is bundled with a bunch plugins (java, scaffold, eclipse, intellij, ...) but one can add extra plugins just
+by adding the jar or directory containing the plugin class to your <em>run classpath</em>.</p>
+<p>To see all available plugins in the <em>run classpath</em>, just execute <code>jerkar help</code>.
+See <a href="#CommandLineParsing">Command Line Parsing</a> and <a href="#RunClassPre-processing(Import3rdpartylibraryintoRunClasspath)">Run Class Pre-processing</a>
+to augment <em>run_classpath</em> .</p>
+<a name="LoadPlugins"></a>
+<h3>1.5.1 Load Plugins</h3>
+<p>Plugins need not to be mentioned in <em>run class</em> code in order to be bound to the JkRun instance. Just the fact to
+mention a plugin <em>run method</em>, <em>options</em> or <em>[pluginName]#</em> in the command line will load the plugin.</p>
+<p>For example <code>jerkar scaffold#run java#</code> will load 'java' and 'scaffold' plugins into a JkRun instance.
+'java' plugin instance will modify 'scaffold' plugin instance in such it produces a run class code extending <code>JkJavaProjectBuild</code>
+instead of 'JkRun' when 'scaffold#run' command is executed. It also creates Java project layout folders. See <code>activate</code> method in <a href="https://github.com/jerkar/jerkar/blob/master/org.jerkar.core/src/main/java/org/jerkar/tool/builtins/java/JkPluginJava.java">JkPluginJava Code</a>
+to have a concrete view.</p>
+<p>You can also force a plugin to load in your <em>run class</em> code as below. That way, you don't need to mention <code>java#</code> in command line.</p>
+<pre><code class="language-Java">public class MyBuild extends JkRun {
+    
+    MyBuild() {
+        plugins().get(JkPluginJava.class);  // Loads 'java' plugins in this instance, a second call on 'plugins().get(JkPluginJava.class)' will return same instance.
+        plugins().get(&quot;intellij&quot;);   // You can also load plugin by mentioning its name but it's slower cause it involves classpath scanning
+    }
+    
+}
+</code></pre>
+<a name="ModifyOwingJkRunInstance"></a>
+<h3>1.5.2 Modify Owing JkRun Instance</h3>
+<p>JkRun instances are created using <code>JkRun#of</code> factory method. This method invoke <code>JkPlugin#active</code> method on all plugin loaded in the JkRun instance.
+By default, this method does nothing but plugin implementations can override it in order to let the plugin modify its owning JkRun or owe of its plugins.</p>
+<p>In fact, many plugins act just as modifier/enhancer of other plugins.</p>
+<p>For example, <a href="https://github.com/jerkar/jerkar/blob/master/org.jerkar.core/src/main/java/org/jerkar/tool/builtins/jacoco/JkPluginJacoco.java">Jacoco Plugin</a>
+does not provide <em>run method</em> but configures 'java' plugin in such unit tests are forked on a JVM with Jacoco agent on.
+It also provides a utility class <code>JKocoJunitEnhancer</code> that supplies lower level features to launch Jacoco programmatically.</p>
+<p>Some other plugins does not modify their owning JkRun instance, for example <a href="https://github.com/jerkar/jerkar/blob/master/org.jerkar.core/src/main/java/org/jerkar/tool/builtins/scaffold/JkPluginScaffold.java">Scaffold Plugin</a>
+does not override <code>activate</code> method, therefore it has no side effect on its owning <code>JkRun</code> instance. It only features <em>run methods</em>  along <em>options</em>.</p>
+<a name="ConfigurePluginsinJkRunClass"></a>
+<h3>1.5.3 Configure Plugins in JkRun Class</h3>
+<p>There is three places where you can configure plugins :</p>
+<ul>
+<li>In <code>JkRun</code> subclass constructor : at this point options has yet been injected so it's the place to configure default option values.</li>
+<li>In <code>JkRun#afterOptionsInjected</code> subclass method : at this point, options has been injected but plugins has not been activated yet.
+It is the place to configure plugins and other instance member to take options in account.</li>
+<li>In <code>JkRun#afterPluginsActivated</code> subclass method : at this point plugins has been activated. If you wan't to override
+some values plugins may have set, override this method.</li>
+</ul>
+<p>Example of configuring a plugin in <em>run class</em>.</p>
+<pre><code class="language-Java">    ...
+    public MyBuild() {
+        JkPluginSonar sonarPlugin = this.plugins().get(JkPluginSonar.class);  // Load sonar plugin 
+		sonarPlugin.prop(JkSonar.BRANCH, &quot;myBranch&quot;);  // define a default for sonar.branch property
+        ...
+    }
+</code></pre>
+<p><a href="https://github.com/jerkar/jerkar/blob/master/org.jerkar.core/jerkar/def/org/jerkar/CoreBuild.java">Jerkar own build class</a> makes a good example.</p>
+<a name="DocumentPlugins"></a>
+<h3>1.5.4 Document Plugins</h3>
+<p>Plugin writers can embed self-documentation using <code>@JkDoc</code> annotation on classes, run methods and public fields.</p>
+<p>Writers can also mention that the plugin has dependencies on other plugins using <code>@JkDocPluginDeps</code> annotation. This annotation
+has only a documentation purpose and does not has influence on plugin loading mechanism.</p>
+<p>A good example is <a href="https://github.com/jerkar/jerkar/blob/master/org.jerkar.core/src/main/java/org/jerkar/tool/builtins/java/JkPluginJava.java"><em>Java Plugin</em></a></p>
+<a name="ImportExternalRuns"></a>
+<h2>1.6 Import External Runs</h2>
+<p>There is many way to perform multi-project build. One of is to import runs from external projects.</p>
+<a name="Principle"></a>
+<h3>1.6.1 Principle</h3>
+<p>A <em>run class</em> instance can import <em>run class</em> instances from other projects.</p>
+<p>The current <em>run classpath</em> is augmented with the <em>run classpath</em> of imported projects.</p>
+<p>Imported runs are not aware they are imported. In fact any run can be imported. The relation is uni-directional.</p>
+<a name="DeclareRunImport"></a>
+<h3>1.6.2 Declare Run Import</h3>
+<p>To import a <em>run class</em> from an external project, use the <code>@JkImportRun</code> annotation as shown below :</p>
+<pre><code class="language-Java">public class MRun extends JkRun {
+    
+    @JkImportRun(&quot;../otherProject&quot;)   // Import a sibling project
+    private BarRun anImportedRun;   // This is a run class from the sibling project
+
+    public void doSomesthing() {
+       anImportedRun.doBar();   // use the run class defined in ../otherProject
+       ...
+</code></pre>
+<p><em>Run classes</em> are imported transitively, this means that, in above example, if <code>BarRun</code> imports an other project, this
+last will be also imported.</p>
+<a name="OptionPropagation"></a>
+<h3>1.6.3 Option Propagation</h3>
+<p>Options mentioned in command line are propagated to the imported runs.</p>
+<p>So for example you execute <code>jerkar java#pack -java#tests.fork</code>, test will be forked for the main run and all imported ones.</p>
+<a name="Methodpropagation"></a>
+<h3>1.6.4 Method propagation</h3>
+<p>Methods mentioned in the command line are not automatically propagated to imported runs. Executing <code>jerkar clean</code> will
+only clean the current run project.</p>
+<p>To propagate method call to every imported runs, method name should be prefixed with a '*'. Executing <code>jerkar clean*</code> will
+invoke 'clean' method on the current <em>run class</em> along along all imported run classes.</p>
+<a name="AccessImportedRunsProgrammatically"></a>
+<h3>1.6.5 Access Imported Runs Programmatically</h3>
+<p>You can access to the list of imported run classes within using <code>JkRun#ImportedRuns</code> methods as show below :</p>
+<pre><code class="language-Java">public class MyRun extends JkRun{
+
+    ...
+
+    public void doForAll() {
+        this.clean();
+        this.importedRuns().all().forEach(JkRun::clean);
+        this.importedRuns().allOf(JkJavaProjectBuild.class).forEach(build -&gt; build.java().pack());
+    }
+</code></pre>
+<a name="SelfDocumentation"></a>
+<h2>1.7 Self Documentation</h2>
+<p><em>Run classes</em> and plugins can provide self documentation.</p>
+<p>When properly auto-documented, users can display documentation by executing <code>jerkar help</code>.</p>
+<p>The displayed documentation consist in :</p>
+<ul>
+<li>The Jerkar Built-in option</li>
+<li>A general description of the run class (its purpose). This information is provided by using <code>@JkDoc</code> annotation at class level.</li>
+<li>A description of each <em>run method</em>. The description is provided by using <code>@JkDoc</code>.</li>
+<li>A description of accept options, with its type and default value. The description is provided by using <code>@JkDoc</code> annotation on public fields.</li>
+<li>The plugins available in the classpath.</li>
+</ul>
+<p>If <em>run class</em> or plugin declares a public instance field without <code>@JkDoc</code> annotation, then it will be displayed in help screen but mentioning that there is no description available.</p>
+<p>If <em>run class</em> or plugin declares a <em>run method</em> without <code>@JkDoc</code>, it will be also displayed in help screen but mentioning that there is no description available.</p>
+<p>This is the display screen for the build class of Jerkar itsef :</p>
+<pre><code>Usage: jerkar [methodA...] [pluginName#methodB...] [-optionName=value...] [-pluginName#optionName=value...] [-DsystemPropName=value...]
+Execute the specified methods defined in run class or plugins using the specified options and system properties.
+When no method specified, 'doDefault' method is invoked.
+Ex: jerkar clean java#pack -java#pack.sources=true -LogVerbose -other=xxx -DmyProp=Xxxx
+
+Built-in options (these options are not specific to a plugin or a build class) :
+  -LogVerbose (shorthand -LV) : if true, logs will display 'trace' level logs.
+  -LogHeaders (shorthand -LH) : if true, meta-information about the build creation itself and method execution will be logged.
+  -LogMaxLength (shorthand -LML) : Console will do a carriage return automatically after N characters are outputted in a single line (ex : -LML=120).
+  -RunClass (shorthand -RC) : Force to use the specified class as the run class to be invoked. It can be the short name of the class (without package prefix).
+
+Available methods and options :
+
+From class org.jerkar.CoreBuild :
+  Methods :
+    doDefault : Conventional method standing for the default operations to perform.
+  Options :
+    -testSamples (boolean, default : false) : If true, executes black-box tests on sample projects prior ending the distrib.
+
+From class org.jerkar.tool.JkRun :
+  Methods :
+    clean : Cleans the output directory.
+    help : Displays all available methods defined in this build.
+
+Available plugins in classpath : eclipse, eclipsePath, intellij, jacoco, java, pgp, pom, repo, scaffold, sonar.
+
+Type 'jerkar [pluginName]#help' to get help on a perticular plugin (ex : 'jerkar java#help').
+Type 'jerkar help -Plugins' to get help on all available plugins in the classpath.
+
+</code></pre>
+<a name="LibraryPart"></a>
+<h1>2. Library Part</h1>
+<p>As said in intro, Jerkar contains a library for all regular things you need to build/publish projects and especially Java projects.</p>
+<p>The library part embeds third party jar as <em>Ivy</em> or <em>BouncyCastle</em> but these dependencies are hidden and loaded in
+a specific class loader. These 3rd party APIs are not visible/accessible to client code so one can use another
+version of these APIs without conflict : you can consider Jerkar as a <em>zero-dependency library</em>.</p>
+<ul>
+<li><strong>Files :</strong> File trees, filters, zip, path sequence</li>
+<li><strong>System :</strong> Launching external process, Logging, Meta-info</li>
+<li><strong>Cryptography :</strong> PGP signer</li>
+<li><strong>Dependency management :</strong> Dependency management, publishing on repositories</li>
+<li><strong>Java :</strong> Compilation, javadoc, resource processor, manifest, packager, classloader, classpath, launching
+<ul>
+<li><strong>Junit :</strong> Launching, report</li>
+<li><strong>Project :</strong> Project structure to build</li>
+</ul>
+</li>
+<li><strong>Tooling :</strong> Eclipse integration, intellij integration, Maven interaction</li>
+<li><strong>Support</strong></li>
+</ul>
+<a name="Files"></a>
+<h2>2.1 Files</h2>
+<p>File manipulation is a central part of building software.
+Jerkar embraces JDK7 <em>java.nio.file</em> API by adding some concept around and provides a powerful fluent style API to perform
+recurrent tasks with minimal effort.</p>
+<p>The following classes lie in <code>org.jerkar.api.file</code> package :</p>
+<ul>
+<li>
+<p><code>JkPathFile</code> : A simple wrapper around  for file (not folder) with copy, content interpolation,
+checksum, deletion, creation features.</p>
+</li>
+<li>
+<p><code>JkPathSequence</code> : A list of <code>java.nio.file.Path</code>.</p>
+</li>
+<li>
+<p><code>JkPathMatcher</code> : A <code>java.nio.file.PathMatcher</code> based on <code>java.nio.file</code> glob pattern or regerxp.</p>
+</li>
+<li>
+<p><code>JkPathTree</code> : A root folder (or a zip file) along a <code>PathMatcher</code> providing operations as copy, navigate, zip, iterate.
+This central class is spread all over Jerkar APIs.</p>
+</li>
+<li>
+<p><code>JkPathTreeSet</code> : A set of <code>JkPathTree</code>.</p>
+</li>
+</ul>
+<a name="System"></a>
+<h2>2.2 System</h2>
+<p>The <code>org.jerkar.api.system</code> package provides classes providing low level functions :</p>
+<ul>
+<li>
+<p><code>JkException</code> : Marker exception generally to mention user misuse.</p>
+</li>
+<li>
+<p><code>JkInfo</code> : Provides information as current version of Jerkar.</p>
+</li>
+<li>
+<p><code>JkLocator</code> : Provides information about where is located folder as repository cache or Jerkar user home.</p>
+</li>
+<li>
+<p><code>JkLog</code> : Provides API to log Jerkar event. It supports hierarchical logs through <code>#startTask</code>
+and <code>#endtask</code> methods.</p>
+</li>
+<li>
+<p><code>JkProcess</code> : Launcher for external process.</p>
+</li>
+</ul>
+<a name="DependencyManagement(OutDated)"></a>
+<h2>2.3 Dependency Management (Out Dated)</h2>
+<a name="Whatisadependency?"></a>
+<h3>2.3.1 What is a dependency ?</h3>
+<p>In Jerkar context, a <strong>dependency</strong> is something that can be resolved to a file (or a set of file) by a <code>JkDependencyResolver</code>.
+A dependency is always an instance of <code>JkDependency</code>.</p>
+<p>Jerkar distinguishes 3 types of <strong>dependency</strong> :</p>
+<ul>
+<li><strong>Arbitrary files</strong> located on the file system (Embodied by <code>JkFileSystemDependency</code> class). These files are assumed to be present on the file system when the build is running.</li>
+<li><strong>Files produced by a computation</strong> (Embodied by <code>JkComputedDependency</code> class). These files may be present on file system or not. If they are not present, the computation is run in order to produce the missing files. Generally the computation stands for the build of an external project.</li>
+<li><strong>Reference to module</strong> (Embodied by <code>JkModuleDependency</code>) hosted in a binary repository (Ivy or Maven for instance) : Jerkar can consume and resolve transitively any artifact located in a repository as you would do with Maven or Ivy.</li>
+</ul>
+<p>For the last, Jerkar is using <b>Ivy 2.4.0</b> under the hood. The library is embedded in the Jerkar jar and is executed in a dedicated classloader. So all happens as if there where no dependency on Ivy.</p>
+<a name="Whatisascope?"></a>
+<h3>2.3.2 What is a scope ?</h3>
+<p>Projects may need dependencies to accomplish certain tasks and needed dependencies may vary according the executed tasks.
+For example, to <strong>compile</strong> you may need <em>guava</em> library only but to <strong>test</strong> you'll need <em>junit</em> library as well.
+To label dependencies according their usage, Jerkar uses the notion of <strong>scope</strong> (embodied by <code>JkScope</code> class). This notion is similar to the Maven scope.</p>
+<p>A scope can <strong>inherit</strong> from one or several scopes. This means that if a scope <em>Foo</em> inherits from scope <em>Bar</em> then a dependencies declared with scope <em>Bar</em> will be also considered as declared with scope <em>Foo</em>.
+For instance, in <code>JkJavaBuild</code>, scope <code>TEST</code> inherits from <code>RUNTIME</code> that inherits from <code>COMPILE</code> so every dependencies declared with scope <code>COMPILE</code> are considered to be declared with scope <code>RUNTIME</code> and <code>TEST</code> as well.</p>
+<p>By default, scopes are <strong>transitive</strong>. This has only a meaning for <strong>reference to module</strong>.
+If we have 3 modules having the following dependency scheme : <code>A</code> -&gt; <code>B</code> -&gt; <code>C</code> and the <code>A</code>-&gt; <code>B</code> dependency is declared with a <strong>non transitive scope</strong>, then <code>A</code> won't depend from <code>C</code>.</p>
+<p>Projects consuming artifacts coming from Ivy repository can also use <code>JkScopeMapping</code> which is more powerful. This notion maps strictly to the <a href="http://ant.apache.org/ivy/history/2.2.0/ivyfile/configurations.html">Ivy configuration</a> concept.</p>
+<a name="Defineasetofdependencies"></a>
+<h3>2.3.3 Define a set of dependencies</h3>
+<p>To define a set of dependencies (typically the dependencies of the project to build), you basically define a list of <strong>scoped dependency</strong> (represented by <code>JkScopedDependency</code> class). A <strong>scoped dependency</strong> is a <strong>dependency</strong> associated with zero, one or several <strong>scopes</strong>.</p>
+<p>Practically, you define some scopes then you bind dependencies to these scopes.</p>
+<p>The set of dependency concept is represented by <code>JkDependencySet</code> class. This class provides fluent API for easier instantiation.</p>
+<pre><code class="language-Java">return JkDependencySet.of()
+    .and(GUAVA, &quot;18.0&quot;).scope(COMPILE)  
+    .and(JERSEY_SERVER, &quot;1.19&quot;).scope(COMPILE)
+    .and(&quot;com.orientechnologies:orientdb-client:2.0.8&quot;).scope(COMPILE)
+    .and(JUNIT, &quot;4.11&quot;).scope(TEST)
+    .and(MOCKITO_ALL, &quot;1.9.5&quot;).scope(TEST, ANOTHER_SCOPE);
+</code></pre>
+<p>You can also omit the scope and set it later...</p>
+<pre><code class="language-Java">JkDependencies deps = JkDependencies.builder()
+    .on(GUAVA, &quot;18.0&quot;)
+    .on(JERSEY_SERVER, &quot;1.19&quot;)
+    .on(&quot;com.orientechnologies:orientdb-client:2.0.8&quot;)
+    .on(JUNIT, &quot;4.11&quot;).scope(TEST)
+    .on(MOCKITO_ALL, &quot;1.9.5&quot;).scope(TEST, ANOTHER_SCOPE)
+.build();
+...
+deps = deps.withDefaultScope(COMPILE);
+</code></pre>
+<p>Here, both <code>GUAVA</code> and <code>JERSEY_SERVER</code> will be declared with <code>COMPILE</code> scope.</p>
+<p>If you don't specify scope on a module and you don't set default scope, then at resolution time the dependency will be considerer as binded to every scope.</p>
+<p class="alert alert-success">
+<b>Note :</b> Instances of <code>JkDependencies</code> can be added to each other. Look at the <a href="http://jerkar.github.io/javadoc/latest/org/jerkar/api/depmanagement/JkDependencies.html">JkDepencies class API</a> for further details.
+</p>
+<a name="Definescopes"></a>
+<h4>2.3.3.1 Define scopes</h4>
+<p>In the examples above, we use the predefined scopes <code>COMPILE</code> or <code>TEST</code>. These scopes are standard scopes defined on the <a href="https://github.com/jerkar/jerkar/blob/master/org.jerkar.core/src/main/java/org/jerkar/tool/builtins/javabuild/JkJavaBuild.java">JkJavaBuild class</a>.
+So if your build definition class inherit from <code>JkJavaBuild</code> template you won't need to create it.</p>
+<p>If you need to create your own <em>scope</em>, a good practice is to declare it as java constant (<code>static final</code>) as it will be reusable anywhere all over your build definition.</p>
+<p>As an example, these are the scopes declared in <code>JkJavaBuild</code> :</p>
+<pre><code class="language-Java">public static final JkScope PROVIDED = JkScope.of(&quot;provided&quot;).transitive(false)
+    .descr(&quot;Dependencies to compile the project but that should not be embedded in produced artifacts.&quot;);
+
+public static final JkScope COMPILE = JkScope.of(&quot;compile&quot;)
+    .descr(&quot;Dependencies to compile the project.&quot;);
+
+public static final JkScope RUNTIME = JkScope.of(&quot;runtime&quot;).extending(COMPILE)
+	.descr(&quot;Dependencies to embed in produced artifacts (as war or fat jar files).&quot;);
+
+public static final JkScope TEST = JkScope.of(&quot;test&quot;).extending(RUNTIME, PROVIDED)
+	.descr(&quot;Dependencies necessary to compile and run tests.&quot;); 
+</code></pre>
+<a name="Definingdifferenttypeofdependencies"></a>
+<h4>2.3.3.2 Defining different type of dependencies</h4>
+<p>This section describes how to declare different types of dependencies.</p>
+<a name="Dependenciesonlocalfiles"></a>
+<h5>2.3.3.2.1 Dependencies on local files</h5>
+<p>You just have to mention the path of one or several files. If one of the files does not exist at resolution time (when the dependency is actually retrieved), build fails.</p>
+<pre><code class="language-Java">    @Override
+    protected JkDependencies dependencies() {
+        final File depFile1 = new File(&quot;/my/file1.jar&quot;);  // file with absolute path
+    	final File depFile2 = file(&quot;zips/file2.zip&quot;);  // file related to project root dir
+        return JkDependencies.builder()
+            .on(depFile1, depFile2, file(&quot;libs/my.jar&quot;)).build();
+    }
+		
+</code></pre>
+<a name="Dependenciesonfilesproducedbycomputation"></a>
+<h5>2.3.3.2.2 Dependencies on files produced by computation</h5>
+<p>It is typically used for <strong>multi projects builds</strong> projects.</p>
+<p>The principle is that if the specified files are not found, then the computation is run in order to generate the missing files.
+If some files still missing after the computation has run, the build fails.</p>
+<p>This mechanism is quite simple yet powerful as it addresses following use cases :</p>
+<ul>
+<li>Dependencies on files produced by other Jerkar project.</li>
+<li>Dependencies on files produced by external project built with any type of technology (Ant, Grunt, Maven, Gradle, SBT, Android SDK, Make, ...).</li>
+<li>Dependencies on files produced by a method of the main build.</li>
+</ul>
+<p>The generic way is to construct this kind of dependency using a <code>java.lang.Runnable</code>.</p>
+<pre><code class="language-Java">private Runnable computation = new Runnable() {...}; 
+	
+File fooFile = new File(&quot;../otherproject/target/output/foo.jar&quot;);  // dependency file  
+	
+@Override
+protected JkDependencies dependencies() {
+return JkDependencies.builder()
+    .on(JkComputedDependency.of(computation, fooFile)).build();
+}
+</code></pre>
+<p>Here, if the <em>fooFile</em> is absent then the <strong>computation</strong> will be run prior to retry to find <em>FooFile</em>.</p>
+<p>Jerkar provides some shortcuts to deal with other Jerkar projects : For this, you can create the dependency directly from the slave build instance.</p>
+<pre><code class="language-Java">@JkProject(&quot;../foo&quot;)          // The external project path relative to the current project root
+public JkJavaBuild fooBuild;  // This build comes from 'foo' project 
+	
+@Override
+protected JkDependencies dependencies() {
+    return JkDependencies.builder()
+	    .on(fooBuild.asComputedDependency(&quot;doPack&quot;, fooBuild.packer().jarFile() ))
+    .build();
+}
+</code></pre>
+<p>Here the method <code>doPack</code> of <code>fooBuild</code> will be invoked if the specified file does not exist.
+See <em>Multi Module Project</em> to get details how parameters are propagated to slave builds.</p>
+<p>You can also use another kind of project mentioning the command line to run in order to build the project.</p>
+<pre><code class="language-Java">File fooDir = new File(&quot;../../foo&quot;);  // base dir of a Ant project 
+File fooJar = new File(fooDir, &quot;build/foo.jar&quot;);
+JkProcess antBuild = JkProcess.of(&quot;ant&quot;, &quot;makeJar&quot;).withWorkingDir(fooDir));
+...
+@Override
+protected JkDependencies dependencies() {
+    return JkDependencies.builder()
+        .on(JkProjectDependency.of(antBuild, fooJar)).scope(PROVIDED)  
+    .build();
+}
+</code></pre>
+<p>Here, if <em>fooJar</em> file does not exist, <code>ant makeJar</code> command line is invoked prior to retry to find the file.
+If the file still does not exist then the build fails.</p>
+<a name="DependenciesonModule"></a>
+<h5>2.3.3.2.3 Dependencies on Module</h5>
+<p>This is for declaring a dependency on module hosted in <em>Maven</em> or <em>Ivy</em> repository. Basically you instantiate a <code>JkModuleDepency</code> from it's group, name and version.</p>
+<pre><code class="language-Java">...	
+@Override  
+protected JkDependencies dependencies() {
+    return JkDependencies.builder()
+        .on(GUAVA, &quot;18.0&quot;)
+        .on(&quot;com.orientechnologies:orientdb-client:2.0.8&quot;)
+        .on(&quot;my.group:mymodule:0.2-SNAPSHOT&quot;)
+	.build();
+}
+...   
+</code></pre>
+<p>There is many way to indicate a module dependency, see <a href="http://jerkar.github.io/javadoc/latest/index.html?org/jerkar/api/depmanagement/JkModuleDependency.html">Javadoc</a> for browsing possibilities.</p>
+<p>Note that a version ending by <code>-SNAPSHOT</code> has a special meaning : Jerkar will consider it <em>&quot;changing&quot;</em>. This means that it won't cache it locally and will download the latest version from repository.</p>
+<a name="DependenciesonDynamicVersions"></a>
+<h6>2.3.3.2.3.1 Dependencies on Dynamic Versions</h6>
+<p>Jerkar allows to specify a version range, for example, the following is legal :</p>
+<pre><code class="language-Java">...	
+@Override  
+protected JkDependencies dependencies() {
+    return JkDependencies.builder()
+        .on(GUAVA, &quot;16.+&quot;)
+        .on(&quot;com.orientechnologies:orientdb-client:[2.0.8, 2.1.0[&quot;)
+	.build();
+}
+...   
+</code></pre>
+<p>As Jerkar relies on Ivy under the hood, you can use any expression mentioned (here) [http://ant.apache.org/ivy/history/latest-milestone/ivyfile/dependency.html].</p>
+<a name="SpecifyingMavenClassifierandextensionoftheartifact"></a>
+<h6>2.3.3.2.3.2 Specifying Maven Classifier and extension of the artifact</h6>
+<p>Maven or Ivy module dependencies need to be downloaded from a binary repository. This could be a managed repository (as <em>Nexus</em> or <em>Artifactory</em>), simple file system repo or a combination of any.</p>
+<pre><code class="language-Java">...	
+@Override 
+protected JkDependencies dependencies() {
+    return JkDependencies.builder()
+        .on(&quot;my.group:mymodule:1.0.1:jdk15&quot;)
+	.build();
+}
+...   
+</code></pre>
+<p>You can also precise the extension of the artifact :</p>
+<pre><code class="language-Java">...	
+@Override 
+protected JkDependencies dependencies() {
+    return JkDependencies.builder()
+        .on(&quot;my.group:mymodule:1.0.1:jdk15@zip&quot;)
+        .on(&quot;my.group:otherModule:1.0.15@exe&quot;)
+	.build();
+}
+...   
+</code></pre>
+<a name="Choosethebinaryrepositorywheretodownloadyourdependencies"></a>
+<h6>2.3.3.2.3.3 Choose the binary repository where to download your dependencies</h6>
+<p>If use <code>JkBuildDependencySupport</code> template, or one of its subclass as <code>JkBuildJava</code>, the default is to use the repository mentioned in your JkOptions :</p>
+<ul>
+<li><code>repo.download.url</code> : the url of the download repository, default is Maven central  :http://repo1.maven.org/maven2`.</li>
+<li><code>repo.download.username</code> : the username credential to access to the repository (optional). Default is null cause Maven central does not require authentication.</li>
+<li><code>repo.download.password</code> : the password credential to access to the repository (optional). Default is null cause Maven central does not require authentication.</li>
+</ul>
+<p>If the repository is an Ivy one, you should prefix the url with <code>ivy:</code>  as <em>ivy:/my/shared/drive/repo</em></p>
+<pre><code class="language-Java">repo.download.url=ivy:http://my/ivy/repo
+repo.download.username=myIvyUsername
+repo.download.password=myIvyPassword
+</code></pre>
+<p>You can also define it programmatically for richer and more flexible options:</p>
+<pre><code>protected JkPublishRepos publishRepositories() {
+    return JkPublishRepos.of(
+        JkRepo.maven(&quot;http://my.snapshot.repo&quot;).asPublishSnapshotRepo())
+            .and( 
+        JkRepo.maven(&quot;http://my.release.repo&quot;).asPublishReleaseRepo());
+}
+</code></pre>
+<a name="Whathappenbehindthehood?"></a>
+<h6>2.3.3.2.3.4 What happen behind the hood ?</h6>
+<p>Jerkar uses <a href="http://ant.apache.org/ivy/">Apache Ivy</a> under the hood to resolve/fetch module dependencies.
+Ivy is invisible to the user except in some log output.
+The dependencies are downloaded in local cache located at <em>[JERKAR USER DIR]/cache/repo</em>.
+You can override this setting by defining the <code>JERKAR_REPO</code> environment variable.</p>
+<a name="BindDependenciestoScopes"></a>
+<h3>2.3.4 Bind Dependencies to Scopes</h3>
+<p>The whole project dependency description lie in a single instance of <code>JkDependencies</code>. This class offers convenient factory methods and builder to define the dependencies.</p>
+<a name="Simplescopes"></a>
+<h4>2.3.4.1 Simple scopes</h4>
+<p>You can bind any kind of dependency to on one or several scopes as :</p>
+<pre><code class="language-Java">private static final JkScope FOO = JkScope.of(&quot;foo&quot;); 
+
+private static final JkScope BAR = JkScope.of(&quot;bar&quot;); 
+
+protected JkDependencies dependencies() {
+		return JkDependencies.builder()
+		    .on(file(&quot;libs/foo3.jar&quot;)).scope(BAR)  
+		    .on(file(&quot;libs/foo1.jar&quot;)).scope(BAR, FOO)  
+			.on(&quot;com.foo:barcomp&quot;, &quot;1.19&quot;).scope(BAR, FOO)  
+			.on(&quot;com.google.guava:guava, &quot;18.0&quot;)
+		.build();
+}
+</code></pre>
+<p>When the dependency is a <strong>module dependency</strong>, transitive resolution comes in play and more subtle concepts appear.
+For resolving <strong>module dependency</strong> Jerkar uses <a href="http://ant.apache.org/ivy/"><strong>Ivy</strong></a> under the cover and scopes are translated to Ivy <a href="http://ant.apache.org/ivy/history/latest-milestone/tutorial/conf.html"><em>configurations</em></a>.</p>
+<p>So the above module dependencies are translated to Ivy equivalent :</p>
+<pre><code class="language-Java">...
+&lt;dependency org=&quot;org.foo&quot; name=&quot;barcomp&quot; rev=&quot;1.19&quot; conf=&quot;bar;foo&quot;/&gt;
+&lt;dependency org=&quot;com.google.guava&quot; name=&quot;guava&quot; rev=&quot;18.0&quot;/&gt;
+</code></pre>
+<a name="ScopeMapping"></a>
+<h4>2.3.4.2 Scope Mapping</h4>
+<p>You can also specify a <em>scope mapping</em> (aka <em>Ivy configuration mapping</em>) for <strong>module dependencies</strong> :</p>
+<pre><code class="language-Java">protected JkDependencies dependencies() {
+		return JkDependencies.builder()
+			.on(&quot;com.foo:barcomp&quot;, &quot;1.19&quot;)
+				.mapScope(COMPILE).to(RUNTIME, BAR)
+				.and(FOO, PROVIDED).to(&quot;fish&quot;, &quot;master(*)&quot;)
+		.build();
+}
+</code></pre>
+<p>So the above module dependencies are translated to Ivy equivalent :</p>
+<pre><code>...
+&lt;dependency org=&quot;org.foo&quot; name=&quot;barcomp&quot; rev=&quot;1.19&quot; conf=&quot;compile-&gt;runtime,bar; foo-&gt;fish,master(*); provided-&gt;fish,master(*)&quot;/&gt;
+</code></pre>
+<a name="DefaultScopeMapping"></a>
+<h4>2.3.4.3 Default Scope Mapping</h4>
+<p>The way transitive dependencies are actually resolved depends on the <code>JkDependencyResolver</code> used for resolution.
+Indeed you can set <em>default scope mapping</em> on the resolver, through <code>JkResolutionParameter</code>. This setting ends at being translated to respectively <em>Ivy configuration mapping</em>.
+<a href="http://ant.apache.org/ivy/history/2.2.0/ivyfile/configurations.html">This page</a> explains how <em>Ivy configurations</em> works.</p>
+<a name="ExcludingModulefromtheDependencyTree"></a>
+<h4>2.3.4.4 Excluding Module from the Dependency Tree</h4>
+<p>When resolving dependency transitively you may grab unwanted dependencies. To filter them out you can exclude them from the tree using appropriate methods.</p>
+<pre><code>final JkDependencies deps = JkDependencies.builder()
+    .on(&quot;org.springframework:spring-context:4.2.1.RELEASE&quot;)
+    .on(&quot;org.hibernate:hibernate-core:4.3.7.Final&quot;).excludeLocally(&quot;dom4j&quot;,&quot;dom4j&quot;)
+    .excludeGlobally(&quot;antlr&quot;, &quot;antlr&quot;)
+    .excludeGlobally(&quot;org.jboss.logging&quot;, &quot;*&quot;).build();
+</code></pre>
+<p><code>#excludeLocally</code> apply only to the module previously declared. So here, <em>dom4j</em> excludes will apply only for <em>hibernate-core</em> dependency. This means that if <em>dom4j</em> is a transitive dependency of <em>hibernate-core</em> then transitive resolution will stop at <em>dom4j</em>. If <em>spring-context</em> as a dependency on <em>dom4j</em> (direct or transitive) then the result will include <em>dom4j</em> along its dependencies as it has not been excluded from <em>spring-context</em> dependency.</p>
+<p><code>#excludeGlobally</code> acts on the global result. If any of the declared dependencies have a dependency on <em>antlr</em> then this lib (and its dependencies) won't be part of the result.</p>
+<p class="alert alert-success">
+<b>Note :</b> You can use wild-card or regular expressions for both group and artifact name. In this case all matching dependencies will be excluded.
+</p>
+<a name="Displayingdependencytree"></a>
+<h3>2.3.5 Displaying dependency tree</h3>
+<p>You can display the resolved dependency tree by running <code>jerkar showDependencies</code>. If you want to retrieve it programmatically, the tree structure is obtained using <code>JkDependencyResolver#resolve()</code> which returns a <code>JkResolveResult</code>. In turn, this object contains a <code>JkDependencyNode</code> standing for the dependency tree root.</p>
+<a name="Publicationonbinaryrepositories(OutDated)"></a>
+<h2>2.4 Publication on binary repositories (Out Dated)</h2>
+<p>Jerkar is able to publish on both Maven and Ivy repository. This includes repositories as <a href="http://www.sonatype.org/nexus/">Sonatype Nexus</a> or <a href="http://www.jfrog.com/artifactory/">Jfrog Artifactory</a>.</p>
+<p>Maven and Ivy have different publication model, so Jerkar proposes specific APIs according you want to publish on a Maven or Ivy repository.</p>
+<a name="PublishtoaMavenrepository"></a>
+<h3>2.4.1 Publish to a Maven repository</h3>
+<p>Jerkar proposes a complete API to pubish on Maven repository. POM files will be generated by Jerkar according
+elements provided by users.</p>
+<a name="UsingrawAPI"></a>
+<h4>2.4.1.1 Using raw API</h4>
+<p>You can set minimal information in order to deploy a file on a Maven repository as below :</p>
+<pre><code>File fileToPublish = new File(&quot;build/output/myFile.jar&quot;);
+JkPublishRepo repo = JkRepo.maven(&quot;http://my.mvn.repo/publisher&quot;).asPublishRepo()
+JkVersionedModule versionedModule = JkVersionedModule.of(&quot;myGroup:myName&quot;, &quot;0.2.1&quot;);
+JkPublisher.of(repo).publishMaven(versionedModule, JkMavenPublication.of(fileToPublish), JkDependencies.on());
+</code></pre>
+<p>You can also set additional information in order to :</p>
+<ul>
+<li>Publish more than one artifact.</li>
+<li>Produce &amp; publish checksum files for each published artifact.</li>
+<li>Mention if you wish or not to use unique snapshot (<a href="http://stackoverflow.com/questions/1243574/how-to-stop-maven-artifactory-from-keeping-snapshots-with-timestamps">What is it ?</a>).</li>
+<li>Feed generated pom with data necessary to publish on <a href="https://maven.apache.org/guides/mini/guide-central-repository-upload.html">central repository</a>.</li>
+<li>Sign published artifact with PGP</li>
+</ul>
+<p class="alert alert-success">
+Not that for signing with PGP, you don't need to have PGP installed on Jerkar machine. Jerkar uses <a href="https://www.bouncycastle.org/">Bouncy Castle</a> internally to sign artifacts.
+</p>
+<pre><code>// You can sign your artifatcs with PGP
+JkPgp pgp = JkPgp.ofSecretRing(new File(&quot;/usr/myName/pgp/privateRing&quot;), &quot;myPgpPhrase&quot;);
+
+JkPublishRepo repo = JkRepo.maven(publishRepo)
+JkPublishRepo repo = JkRepo.maven(publishRepo)
+    .withCredential(&quot;myRepoUserName&quot;, &quot;myRepoPassword&quot;).asPublishRepo()
+    .withUniqueSnapshot(false)
+    .withSigner(pgp)
+    .andSha1Md5Checksums(); // You can checksum each of published artifacts
+			
+JkVersionedModule versionedModule = JkVersionedModule.of(&quot;myGroup:myName&quot;, &quot;0.2.1&quot;);
+		
+// Optinal : if you need to add metadata in the generated pom
+JkMavenPublicationInfo info = JkMavenPublicationInfo
+    .of(&quot;my project&quot;, &quot;my description&quot;, &quot;http://myproject.github&quot;)
+    .withScm(&quot;http://scm/url/connection&quot;)
+    .andApache2License()
+    .andGitHubDeveloper(&quot;myName&quot;, &quot;myName@provider.com&quot;);				
+		
+// Optional : if you want publish sources
+File srcZip = ouputDir(&quot;src.zip&quot;);
+JkZipper.of(this.src).to(srcZip);
+		
+JkMavenPublication publication = JkMavenPublication.of(jarFile).with(info).and(srcZip, &quot;sources&quot;);
+JkPublisher.of(repo).publishMaven(versionedModule, publication, JkDependencies.on());
+</code></pre>
+<a name="UsingJkJavaBuildtemplate"></a>
+<h4>2.4.1.2 Using JkJavaBuild template</h4>
+<p>If your build class inherit from <em>JkBuildJava</em> template, the effort you must produce to publish artifacts is minimal or zero if you don't need special feature.
+The prerequisite is to setup <em>options.properties</em> according to your infrastructure.</p>
+<a name="Usingdefaults"></a>
+<h5>2.4.1.2.1 Using defaults</h5>
+<p>If you don't specify anything the publication will occurs locally at : <em>[JERKAR USER HOME]/maven-publish-dir</em></p>
+<p>If you specify</p>
+<pre><code>repo.publish.url=http://my.repository/location
+repo.publish.username=myUsername (optional)
+repo.publish.password=myPassword (optional)
+</code></pre>
+<p>Jerkar will use this repository to publish your all your artifacts (snapshots and releases).</p>
+<p>If you specify</p>
+<pre><code>repo.publish.url=http://my.repository/location
+repo.publish.username=myUsername (optional)
+repo.publish.password=myPassword (optional)
+
+repo.publishRelease.url=http://my.repository/release/location
+repo.publishRelease.username=myUsername (optional)
+repo.publishRelease.password=myPassword (optional)
+</code></pre>
+<p>Jerkar will publish snapshots on <em>http://my.repository/location</em> and releases on <em>http://my.repository/release/location</em>.</p>
+<a name="Usingapoolofrepositories"></a>
+<h5>2.4.1.2.2 Using a pool of repositories</h5>
+<p>You can define a pool of repositories in your options ([JERKAR USER DIR]/options.properties) so that
+you can refer only to the repository name to point on a repository.</p>
+<pre><code>repo.myRepo1.url=https://my.nexus/repo1
+
+repo.myRepo2.url=https://my.nexus/repo2
+repo.myRepo2.username=usernameRepo2
+repo.myRepo2.password=repo2
+
+repo.myRepo3.url=https://my.nexus/repo3
+repo.myRepo3.username=usernameRepo3
+repo.myRepo3.password=passwordRepo3
+</code></pre>
+<p>Then you can mention your publish repositories in option as</p>
+<pre><code>repo.publishName=myRepo2   (for snapshots + releases)
+</code></pre>
+<p>or</p>
+<pre><code>repo.publishName=myRepo2   (for snapshots)
+repo.publishReleaseName=myRepo3  (for releases)
+</code></pre>
+<p>or you can override the JKbuildDependencySupport#publishRepositories in your build class as</p>
+<pre><code>@Override
+protected JkPublishRepos publishRepositories() {
+    return repoFromOptions(&quot;myRepo2&quot;).asPublishSnapshotRepo()
+        .andRelease(repoFromOptions(&quot;myRepo3&quot;));
+}
+</code></pre>
+<p>In this case the snapshot artifacts (those with version's ending with '-SNAPSHOT') will be published on https://my.nexus/repo2 while the other will be published in https://my.nexus/repo3.</p>
+<p>You can also override `publishRepositories``in your build script so you can write your own specific logic to setup and select publish repositories.</p>
+<a name="PublishtoaIvyrepository"></a>
+<h3>2.4.2 Publish to a Ivy repository</h3>
+<p>Publishing to an Ivy repository is similar to publishing to a Maven one, except :</p>
+<ul>
+<li>The publishing creates a <em>ivy.xml</em> file instead of a <em>pom.xml</em> file.</li>
+<li>The publisher needs to declare at least one Ivy repository. If not the case, nothing will be published.</li>
+<li>You must feed the publish method with <code>JkIvyPublication</code> instead of <code>JkMavenPublication</code>.</li>
+</ul>
+<p>This give an example of build file publishing on ivy with specific scope mapping.</p>
+<pre><code>public class IvyPublishBuild extends JkJavaBuild {
+	
+    {
+        this.pack.tests = true;
+        this.pack.javadoc = true;
+    }
+	
+    @Override
+    public JkModuleId moduleId() {
+        return JkModuleId.of(&quot;org.jerkar&quot;, &quot;script-samples-ivy&quot;);
+    }
+
+    @Override
+    public JkDependencies dependencies() {
+        return JkDependencies.builder()
+            .on(GUAVA, &quot;18.0&quot;)	
+            .on(JERSEY_SERVER, &quot;1.19&quot;).mapScope(RUNTIME, TEST).to(COMPILE)
+            .on(&quot;com.orientechnologies:orientdb-client:2.0.8&quot;)
+            .on(JUNIT, &quot;4.11&quot;).scope(TEST)
+            .on(MOCKITO_ALL, &quot;1.9.5&quot;).scope(TEST)
+            .build();
+    }
+	
+    @Override
+    protected JkRepos downloadRepositories() {
+        return JkRepo.ivy(this.repo.publish.url).and(JkRepo.mavenCentral());
+    }
+	
+    @Override 
+    protected JkPublishRepos publishRepositories() {
+        return JkRepo.ivy(this.repo.publish.url).asPublishRepos();
+    }
+	
+    @Override
+    protected JkIvyPublication ivyPublication() {
+        return JkIvyPublication.of(packer().jarFile(), COMPILE)
+            .and(packer().jarTestFile(), TEST)
+            .and(packer().javadocFile(), JAVADOC)
+            .and(packer().jarSourceFile(), &quot;src&quot;, SOURCES)
+            .and(packer().jarTestSourceFile(), &quot;src&quot;, SOURCES, TEST);	
+    }
+
+}
+</code></pre>
+<a name="Publishtoapubliccentralrepositoty"></a>
+<h3>2.4.3 Publish to a public central repositoty</h3>
+<p>Publishing to a central repository (as Maven central through OSSRH) generally requires extra information to be passed along indications to sign your artifacts.</p>
+<pre><code>    // Extra information mandatory to publish to OSSRH 
+    @Override
+    protected JkMavenPublication mavenPublication() {
+        return super.mavenPublication().with(
+                JkMavenPublicationInfo
+                .of(&quot;Jerkar&quot;, &quot;Build simpler, stronger, faster&quot;, &quot;http://jerkar.github.io&quot;)
+                .withScm(&quot;https://github.com/jerkar/jerkar.git&quot;).andApache2License()
+                .andGitHubDeveloper(&quot;djeang&quot;, &quot;djeangdev@yahoo.fr&quot;));
+    }
+
+   @Override
+   protected JkPublishRepos publishRepositories() {
+        return JkPublishRepos.ossrh(&quot;myOssrhUserName&quot;, &quot;myOssrhPassword&quot;, pgp());
+   }
+</code></pre>
+<p>OSSRH requires to sign artifact using PGP. For such Jerkar needs a <em>JkPgp</em> object containing everything necessary to sign artifact.
+By default Jerkar assumes that :</p>
+<ul>
+<li>public ring is located at <em>[USER HOME]\AppData\Roaming\gnupg\pubring.gpg</em> on Windows and at <em>[USER HOME]/gnupg/pubring.gpg</em> on Unix systems</li>
+<li>secret ring is located at [USER HOME]\AppData\Roaming\gnupg\secring.gpg on Windows and at <em>[USER HOME]/gnupg/secring.gpg</em> on Unix systems</li>
+<li>secret ring password is provided by option <em>pgp.secretKeyPassword</em></li>
+</ul>
+<p>Pass your secret key password as an option <em>pgp.secretKeyPassword=mySecretRingPassword</em> when you launch your build or store it in your [JERKAR USER HOME]/options.properties if you consider it is safe enough.</p>
+</body>
+</html>

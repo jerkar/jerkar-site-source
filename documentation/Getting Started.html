@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="style/style.css" />
+    <link rel="stylesheet" href="style/menuItem.css" />
+    <title>Jerkar - Reference Guide</title>
+</head>
+
+<body>
+<div class="title">Jerkar - Getting Started</div>
+<div style="color: #317eac; font-size: large"><strong>Author :</strong> Jérôme Angibaud</div>
+<div style="color: #317eac; font-size: large"><strong>Version :</strong> 0.7-SNAPSHOT</div>
+<br />
+<a href="#Lexical" class="menuItem1">1. Lexical</a><br />
+<a href="#InstallJerkar" class="menuItem1">2. Install Jerkar</a><br />
+<a href="#UseJerkarwithcommandline" class="menuItem1">3. Use Jerkar with command line</a><br />
+<a href="#Createaproject" class="menuItem2">3.1 Create a project</a><br />
+<a href="#Buildyourproject" class="menuItem2">3.2 Build your project</a><br />
+<a href="#Extrafunction" class="menuItem2">3.3 Extra function</a><br />
+<a href="#Explorefunctionsandoptionsprovidedout-of-thebox" class="menuItem2">3.4 Explore functions and options provided out-of-thebox</a><br />
+<a href="#UsewithEclipse" class="menuItem1">4. Use with Eclipse</a><br />
+<a href="#SetupEclipse" class="menuItem2">4.1 Setup Eclipse</a><br />
+<a href="#setup" class="menuItem2">4.2 setup </a><br />
+<a href="#run/debugwithinEclipse" class="menuItem2">4.3 run/debug within Eclipse</a><br />
+<a href="#Usewithintellij" class="menuItem1">5. Use with intellij</a><br />
+<a href="#setupintellij" class="menuItem2">5.1 setup intellij</a><br />
+<a href="#setupimlfile" class="menuItem2">5.2 setup iml file</a><br />
+<a href="#run/debugwithinIntellij" class="menuItem2">5.3 run/debug within Intellij</a><a name="Lexical"></a>
+<h1>1. Lexical</h1>
+<p>These terms are used in this document, this short lexical disambiguates their meanings.</p>
+<p><strong>[JERKAR HOME]</strong> : refers to the folder where <em>Jerkar</em> is intalled. You should find <em>jerkar.bat</em> and <em>jerkar</em> shell files directly under this folder.</p>
+<p><strong>[JERKAR USER HOME]</strong> : refers to the folder where Jerkar stores caches, binary repository and global user configuration.</p>
+<p><strong>[USER HOME]</strong> : User Home within the meaning of Windows or Unix.</p>
+<a name="InstallJerkar"></a>
+<h1>2. Install Jerkar</h1>
+<ol>
+<li>unzip the <a href="http://jerkar.github.io/binaries/jerkar-distrib.zip">distribution archive</a> to the directory you want to install Jerkar (<em>[JERKAR HOME]</em>)</li>
+<li>make sure that either a valid JDK is on your <em>PATH</em> environment variable or that a <em>JAVA_HOME</em> variable is pointing on</li>
+<li>add <em>[JERKAR HOME]</em> to your <em>PATH</em> environment variable</li>
+<li>execute <code>jerkar -LH help</code> in the command line. You should get an output starting by :</li>
+</ol>
+<pre><code> _______           _
+(_______)         | |
+     _ _____  ____| |  _ _____  ____
+ _  | | ___ |/ ___) |_/ |____ |/ ___)
+| |_| | ____| |   |  _ (/ ___ | |
+ \___/|_____)_|   |_| \_)_____|_|
+                                     The 100% Java build tool.
+Java Home : C:\Program Files (x86)\Java\jdk1.8.0_121\jre
+Java Version : 1.8.0_121, Oracle Corporation
+Jerkar Home : C:\software\jerkar                             
+Jerkar User Home : C:\users\djeang\.jerkar
+...
+</code></pre>
+<p>Note : -LH option stands for &quot;Log Headers&quot;. In this mode, Jerkar displays meta-information about the running build.</p>
+<a name="UseJerkarwithcommandline"></a>
+<h1>3. Use Jerkar with command line</h1>
+<a name="Createaproject"></a>
+<h2>3.1 Create a project</h2>
+<ol>
+<li>Create a new directory named 'mygroup.myproject' as the root of your project.</li>
+<li>Execute <code>jerkar scaffold#run java#</code> under this directory.
+This will generate a project skeleton with the following build class at <em>[PROJECT DIR]/build/def/Build.java</em></li>
+</ol>
+<pre><code class="language-Java">import org.jerkar.api.depmanagement.JkDependencySet;
+import org.jerkar.api.java.JkJavaVersion;
+import org.jerkar.tool.JkInit;
+import org.jerkar.tool.builtins.java.JkJavaProjectBuild;
+
+import static org.jerkar.api.depmanagement.JkJavaDepScopes.*;
+
+/**
+ * @formatter:off
+ */
+class Build extends JkJavaProjectBuild {
+
+    protected Build() {
+        java().projectVersion = &quot;0.0.1-SNAPSHOT&quot;;
+    }
+
+    /*
+     * Configures plugins to be bound to this build class. When this method is called, build option
+     * fields have already been populated.
+     */
+    @Override
+    protected void afterOptionsInjected() {
+        project()   // Configure project structure and dependencies using project() instance.
+                .setVersionedModule(&quot;org.djeang.build:org.djeang.build&quot;, java().projectVersion)
+                .setSourceVersion(JkJavaVersion.V8)
+                .setDependencies(dependencies());
+        maker().setTestRunner(maker().getTestRunner().forked(true));  // force tu run test in forked process
+    }
+
+    private JkDependencySet dependencies() {  // Example of dependencies.
+        return JkDependencySet.of()
+                .and(&quot;com.google.guava:guava:21.0&quot;)
+                .and(&quot;junit:junit:4.11&quot;, TEST);
+    }
+
+    public static void main(String[] args) {
+        Build build = JkInit.instanceOf(Build.class, args);
+        build.clean();
+        build.java().pack();
+    }
+}
+</code></pre>
+<p>Explanation : <code>scaffold#run</code> invokes 'run' method on the 'scaffold' plugin.  <code>java#</code> forces the <code>java</code> plugin to be loaded. When loaded,
+'java' plugin has the effect to instruct scaffold plugin extra actions for generating a Java project.</p>
+<p>By default the project layout mimics the Maven one so sources are supposed to lie in <em>src/main/java</em>.</p>
+<p>Execute <code>jerkar java#info</code> to see an abstract of the project setup.</p>
+<a name="Buildyourproject"></a>
+<h2>3.2 Build your project</h2>
+<ol>
+<li>Edit the Build.java source file above. For example, you can add compile dependencies.</li>
+<li>Just execute <code>jerkar clean java#pack</code> under the project base directory. This will compile, run test and package your project in a jar file.</li>
+</ol>
+<a name="Extrafunction"></a>
+<h2>3.3 Extra function</h2>
+<p>If you want to create javadoc, jar sources and  jar tests or checksums :
+just execute <code>jerkar clean java#pack -java#pack.tests -java#pack.sources -java#pack.checksums=sha-256</code>.</p>
+<p>Explanation  '-' prefix means that you want to set an option value. For example <code>-java#pack.sources</code> means that
+<code>JkPluginJava.pack.sources</code> will be injected the 'true' value.</p>
+<p>You can also set it by default in the build class constructor :</p>
+<pre><code class="language-Java">    protected Build() {
+        java().pack.javadoc = true;
+        java().pack.sources = true;
+        java().pack.tests = true;
+        java().pack.checksums = &quot;sha-256&quot;;
+    }
+</code></pre>
+<a name="Explorefunctionsandoptionsprovidedout-of-thebox"></a>
+<h2>3.4 Explore functions and options provided out-of-thebox</h2>
+<p>Execute <code>jerkar help</code> to display all what you can do from the command line for the current project. As told on the help screen,
+you can execute <code>jerkar aGivenPluginName#help</code> to display help on a specific plugin.
+The list of available plugins on the Jerkar classpath is displayed in help screen.</p>
+<a name="UsewithEclipse"></a>
+<h1>4. Use with Eclipse</h1>
+<a name="SetupEclipse"></a>
+<h2>4.1 Setup Eclipse</h2>
+<p>To use Jerkar within Eclipse, you just have to set 2 classpath variables in Eclipse.</p>
+<ol>
+<li>Open the Eclipse preference window : <em>Window -&gt; Preferences</em></li>
+<li>Navigate to the classpath variable panel : <em>Java -&gt; Build Path -&gt; Classpath Variables</em></li>
+<li>Add these 2 variables :
+<ul>
+<li><code>JERKAR_HOME</code> which point to <em>[Jerkar Home]</em>,</li>
+<li><code>JERKAR_REPO</code> which point to <em>[Jerkar User Home]/cache/repo</em>.</li>
+</ul>
+</li>
+</ol>
+<p>Note : By default <em>[Jerkar User Home]</em> point to <em>[User Home]/.jerkar</em> but can be overridden by defining the environment
+variable <code>JERKAR_USER_HOME</code>.</p>
+<p>If you have any problem to figure out the last value, just execute <code>jerkar help -LH</code> from anywhere and it will start logging the relevant information :</p>
+<pre><code> _______    	   _
+(_______)         | |                
+     _ _____  ____| |  _ _____  ____ 
+ _  | | ___ |/ ___) |_/ |____ |/ ___)
+| |_| | ____| |   |  _ (/ ___ | |    
+ \___/|_____)_|   |_| \_)_____|_|
+                                     The 100% Java build tool.
+
+Java Home : C:\UserTemp\I19451\software\jdk1.6.0_24\jre
+Java Version : 1.6.0_24, Sun Microsystems Inc.
+Jerkar Home : C:\software\jerkar                               &lt;-- This is the value for JERKAR_HOME
+Jerkar User Home : C:\users\djeang\.jerkar
+Jerkar Repository Cache : C:\users\djeang\.jerkar\cache\repo   &lt;-- This is the value for JERKAR_REPO
+...
+</code></pre>
+<a name="setup"></a>
+<h2>4.2 setup <em>.classpath</em> file</h2>
+<p>Execute <code>jerkar eclipse#generateFiles</code> from project root folder to generate a <em>.classpath</em> file
+according the <code>Build.java</code> file.</p>
+<a name="run/debugwithinEclipse"></a>
+<h2>4.3 run/debug within Eclipse</h2>
+<p>You can go two ways :</p>
+<ul>
+<li>Just execute your Build class main method.</li>
+<li>Configure a launcher on <code>org.jerkar.tool.Main</code> class that has your project root dir as working directory. This way you
+can specify which method to execute along options and system properties.</li>
+</ul>
+<a name="Usewithintellij"></a>
+<h1>5. Use with intellij</h1>
+<a name="setupintellij"></a>
+<h2>5.1 setup intellij</h2>
+<p>As for Eclipse, you must declare the two path variable (go settings -&gt; Apparence &amp; behavior -&gt; Path Variables)</p>
+<ul>
+<li><code>JERKAR_HOME</code> which point to <em>[Jerkar Home]</em>,</li>
+<li><code>JERKAR_REPO</code> which point to <em>[Jerkar User Home]/cache/repo</em></li>
+</ul>
+<a name="setupimlfile"></a>
+<h2>5.2 setup iml file</h2>
+<p>Execute <code>jerkar intellij#generateIml</code> from project root folder to generate an iml file
+according the Build.java file.</p>
+<a name="run/debugwithinIntellij"></a>
+<h2>5.3 run/debug within Intellij</h2>
+<p>You can go two ways :</p>
+<ul>
+<li>Just execute your Build class main method.</li>
+<li>Create a Run/Debug application configuration for class <code>org.jerkar.tool.Main</code> class.</li>
+</ul>
+<p><strong>Important :</strong> Make sure you choose <strong>$MODULE_DIR$</strong> as the working directory for the Run/Debug configuration.</p>
+</body>
+</html>
