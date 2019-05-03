@@ -17,41 +17,25 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
-import java.util.List;
 
 class Build extends JkRun {
 
-    JkPathTree src = getBaseTree().goTo("src");
-    JkPathTree markdownSrc = src.goTo("markdown");
-    JkPathTree jbakeSrc = src.goTo("jbake");
+    JkPathTree jbakeSrc = getBaseTree().goTo("src/jbake");
 
     JkPathTree jbakeToolDir = getBaseTree().goTo("jerkar/tools/jbake-2.3.2");
-    JkPathTree siteBase = JkPathTree.of(getOutputDir().resolve("site"));
 
     Path temp = getOutputDir().resolve("temp");
 
-    // Source elements got from Jerkar project
+    Path targetSiteDir = getOutputDir().resolve("site");
+
     Path jerkarProjectPath = getBaseTree().getRoot().getParent().resolve("jerkar/org.jerkar.core");
 
-    JkPathTree jerkarDistJavadoc = JkPathTree.of(jerkarProjectPath).goTo("org.jerkar.core/jerkar/output/javadoc");
-    Path jerkarDistZip =jerkarProjectPath.resolve("jerkar/output/org.jerkar.core-distrib.zip");
-
-    JkPathTree jbakeSrcContent = jbakeSrc.goTo("content");
-    //JkPathTree siteSourceDocDir = jbakeSrcContent.goTo("documentation");
-    Path siteDistDir = siteBase.getRoot().resolve("binaries");
-    JkPathTree siteTargetDocDir = siteBase.goTo("content/documentation");
-
-    JkPathTree filesWithoutJbakeHeader = jbakeSrcContent.andAccept(("**/*.md")).andReject("about.md", "download.md",
-            "tell-me-more.md");
-
-    JkPathTree filesToAddSideMenu = filesWithoutJbakeHeader.andReject("documentation/latest/faq.md");
 
     @JkDoc({ "Generates the site and imports documentation inside.",
             "You must have the Jerkar repo (containing the documentation) in your git home." })
     public void full() throws IOException {
         clean();
         makeJbakeTemp();
-        addMenu();
         addJbakeHeaders();
         jbake();
         copyCurrentDist();
@@ -60,13 +44,12 @@ class Build extends JkRun {
 
     private void makeJbakeTemp() {
         jbakeSrc.copyTo(temp);
-
-        // import .md files from Jerkar project
         Path target = temp.resolve("content");
         JkPathTree.of(jerkarProjectPath).goTo("src/main/doc").andAccept("*.md").copyTo(target);
     }
 
     public void addJbakeHeaders() throws IOException {
+        JkPathTree filesWithoutJbakeHeader = jbakeSrc.goTo("content").andAccept(("**/*.md"));
         for (Path file : filesWithoutJbakeHeader.getFiles()) {
             String content = jbakeHeader(file);
             byte[] previousContent = Files.readAllBytes(file);
@@ -75,37 +58,16 @@ class Build extends JkRun {
         }
     }
 
-    public void importSiteDoc() throws IOException {
-        Path dest = jbakeSrc.get("content");
-        for (Path path : markdownSrc.getFiles()) {
-            String originalContent = new String(Files.readAllBytes(path), Charset.forName("UTF8"));
-            String newContent = originalContent.replace("${jerkarVersion}", currentJerkarVersion());
-            Path targetFile = dest.resolve(markdownSrc.getRoot().relativize(path));
-            Files.createDirectories(targetFile.getParent());
-            Files.write(targetFile, newContent.getBytes(Charset.forName("UTF8")), StandardOpenOption.CREATE_NEW);
-        }
-    }
-
     public void copyCurrentDist() {
-        JkPathTree.of(siteDistDir)
-                .bring(jerkarDistZip, StandardCopyOption.REPLACE_EXISTING);
-    }
-
-    private String currentJerkarVersion() {
-        return "0.0.7";
-        /*
-        JkLog.info("Read manifest from " + jerkarDistZip);
-        JkPathTree zipFile = JkPathTree.ofZip(jerkarDistZip);
-        Path manifestPath  = zipFile.get("META-INF/MANIFEST.MF");
-        JkManifest manifest = JkManifest.of(manifestPath);
-        return manifest.mainAttribute(Name.IMPLEMENTATION_VERSION);
-        */
-
+        Path siteDistDir = targetSiteDir.resolve("binaries");
+        Path jerkarDistZip =jerkarProjectPath.resolve("jerkar/output/org.jerkar.core-distrib.zip");
+        JkPathTree.of(siteDistDir).bring(jerkarDistZip, StandardCopyOption.REPLACE_EXISTING);
     }
 
     public void copyCurrentJavadoc() {
+        JkPathTree jerkarDistJavadoc = JkPathTree.of(jerkarProjectPath).goTo("org.jerkar.core/jerkar/output/javadoc");
         if (jerkarDistJavadoc.exists()) {
-            JkLog.execute("Copping javadoc", () -> jerkarDistJavadoc.copyTo(siteBase.get("javadoc")));
+            JkLog.execute("Copping javadoc", () -> jerkarDistJavadoc.copyTo(targetSiteDir.resolve("javadoc")));
         } else {
             JkLog.warn("Javadoc not found.");
         }
@@ -131,15 +93,6 @@ class Build extends JkRun {
         JkInit.instanceOf(Build.class, args).full();
     }
 
-    private void addMenu() throws IOException {
-        for (Path file : filesToAddSideMenu.getFiles()) {
-            String menuHtml = ImplicitMenu.ofMarkdowndFile(file, 2).divSideBarAndScriptHtml();
-            byte[] currentContent = Files.readAllBytes(file);
-            Files.write(file, menuHtml.getBytes("UTF8"), StandardOpenOption.CREATE);
-            Files.write(file, currentContent, StandardOpenOption.APPEND);
-            Files.write(file, ImplicitMenu.endDivHtml("end of wrapper div").getBytes(Charset.forName("UTF8")),
-                    StandardOpenOption.APPEND);
-        }
-    }
+
 
 }
