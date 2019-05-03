@@ -1,5 +1,6 @@
 package jerkar.github.io;
 
+import org.jerkar.api.file.JkPathFile;
 import org.jerkar.api.file.JkPathTree;
 import org.jerkar.api.java.JkJavaProcess;
 import org.jerkar.api.system.JkLog;
@@ -27,14 +28,16 @@ class Build extends JkRun {
     JkPathTree jbakeToolDir = getBaseTree().goTo("jerkar/tools/jbake-2.3.2");
     JkPathTree siteBase = JkPathTree.of(getOutputDir().resolve("site"));
 
+    Path temp = getOutputDir().resolve("temp");
+
     // Source elements got from Jerkar project
-    Path jerkarProjectPath = getBaseTree().getRoot().getParent().resolve("jerkar");
-    JkPathTree jerkarCoreDocDir = JkPathTree.of(jerkarProjectPath.resolve("org.jerkar.core/src/main/doc"));
-    JkPathTree jerkarDistJavadoc = JkPathTree.of(jerkarProjectPath.resolve("org.jerkar.core/jerkar/output/javadoc-all"));
-    Path jerkarDistZip =jerkarProjectPath.resolve("org.jerkar.core/jerkar/output/org.jerkar.core-distrib.zip");
+    Path jerkarProjectPath = getBaseTree().getRoot().getParent().resolve("jerkar/org.jerkar.core");
+
+    JkPathTree jerkarDistJavadoc = JkPathTree.of(jerkarProjectPath).goTo("org.jerkar.core/jerkar/output/javadoc");
+    Path jerkarDistZip =jerkarProjectPath.resolve("jerkar/output/org.jerkar.core-distrib.zip");
 
     JkPathTree jbakeSrcContent = jbakeSrc.goTo("content");
-    JkPathTree siteSourceDocDir = jbakeSrcContent.goTo("documentation");
+    //JkPathTree siteSourceDocDir = jbakeSrcContent.goTo("documentation");
     Path siteDistDir = siteBase.getRoot().resolve("binaries");
     JkPathTree siteTargetDocDir = siteBase.goTo("content/documentation");
 
@@ -43,17 +46,11 @@ class Build extends JkRun {
 
     JkPathTree filesToAddSideMenu = filesWithoutJbakeHeader.andReject("documentation/latest/faq.md");
 
-    @Override
-    public void clean() {
-        siteBase.andReject(".*/**", "_*/**", "binaries/**").deleteContent();
-        jbakeSrcContent.createIfNotExist().deleteContent();
-    }
-
     @JkDoc({ "Generates the site and imports documentation inside.",
             "You must have the Jerkar repo (containing the documentation) in your git home." })
     public void full() throws IOException {
         clean();
-        importContent();
+        makeJbakeTemp();
         addMenu();
         addJbakeHeaders();
         jbake();
@@ -61,27 +58,12 @@ class Build extends JkRun {
         copyCurrentJavadoc();
     }
 
-    public void importContent() throws IOException {
-        importDocFromJerkarProject();
-        importSiteDoc();
-    }
+    private void makeJbakeTemp() {
+        jbakeSrc.copyTo(temp);
 
-    public void importDocFromJerkarProject() throws IOException {
-        JkPathTree targetDocDir = siteSourceDocDir.goTo("latest");
-        List<Path> files = jerkarCoreDocDir.andAccept("**/*.md").andReject("reference/**/*").getFiles();
-        Path temp = Files.createTempFile("reference", ".md");
-        jerkarCoreDocDir.goTo("reference").bring(temp);
-        files.add(temp);
-        for (Path file : files) {
-            String relativePath = file.startsWith(jerkarCoreDocDir.getRoot()) ?
-                    jerkarCoreDocDir.getRoot().relativize(file).toString() : file.getFileName().toString();
-            Path copied = targetDocDir.getRoot().resolve(relativePath);
-            Files.createDirectories(copied.getParent());
-            JkLog.info("Importing doc file " + file + " to " + copied);
-            byte[] content = Files.readAllBytes(file);
-            Files.write(copied, content);
-        }
-        Files.deleteIfExists(temp);
+        // import .md files from Jerkar project
+        Path target = temp.resolve("content");
+        JkPathTree.of(jerkarProjectPath).goTo("src/main/doc").andAccept("*.md").copyTo(target);
     }
 
     public void addJbakeHeaders() throws IOException {
@@ -105,12 +87,8 @@ class Build extends JkRun {
     }
 
     public void copyCurrentDist() {
-        JkLog.execute("copying current dir",() -> JkPathTree.of(siteDistDir)
-                .bring(jerkarDistZip, StandardCopyOption.REPLACE_EXISTING));
-
-
-        // Retrieve the current version
-
+        JkPathTree.of(siteDistDir)
+                .bring(jerkarDistZip, StandardCopyOption.REPLACE_EXISTING);
     }
 
     private String currentJerkarVersion() {
@@ -127,7 +105,7 @@ class Build extends JkRun {
 
     public void copyCurrentJavadoc() {
         if (jerkarDistJavadoc.exists()) {
-            JkLog.execute("Copping javadoc", () -> jerkarDistJavadoc.copyTo(siteBase.get("javadoc/latest")));
+            JkLog.execute("Copping javadoc", () -> jerkarDistJavadoc.copyTo(siteBase.get("javadoc")));
         } else {
             JkLog.warn("Javadoc not found.");
         }
@@ -136,7 +114,7 @@ class Build extends JkRun {
     public void jbake() {
         JkJavaProcess.of().withClasspath(jbakeToolDir.andAccept("lib/*.jar").getFiles())
                 .runJarSync(jbakeToolDir.get("jbake-core.jar"),
-                "src/jbake", "jerkar/output/site");
+                "jerkar/output/temp", "jerkar/output/site");
     }
 
     private static String jbakeHeader(Path file) {

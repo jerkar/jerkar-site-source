@@ -6,7 +6,7 @@ status=published
 
 ## Snapshot version
 
-* [Last build](binaries/jerkar-distrib.zip) ${jerkarVersion}
+* [Last build](binaries/jerkar-distrib.zip) 0.0.7
 
 ## Release versions
 
