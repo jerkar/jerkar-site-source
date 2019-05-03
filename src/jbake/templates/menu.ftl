@@ -18,10 +18,10 @@
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Documentation<b class="caret"></b></a>
               <ul class="dropdown-menu">
-                <li><a href="<#if (content.rootpath)??>${content.rootpath}<#else></#if>documentation/getting_started.html">Getting Started</a></li>
-                <li><a href="<#if (content.rootpath)??>${content.rootpath}<#else></#if>documentation/reference.html">Reference Guide</a></li>
+                <li><a href="<#if (content.rootpath)??>${content.rootpath}<#else></#if>getting_started.html">Getting Started</a></li>
+                <li><a href="<#if (content.rootpath)??>${content.rootpath}<#else></#if>reference.html">Reference Guide</a></li>
                 <li><a href="https://github.com/jerkar/jerkar-examples">Examples</a></li>
-                <li><a href="<#if (content.rootpath)??>${content.rootpath}<#else></#if>documentation/faq.html">Frequently Asked Questions</a></li>
+                <li><a href="<#if (content.rootpath)??>${content.rootpath}<#else></#if>faq.html">Frequently Asked Questions</a></li>
                 <li><a href="<#if (content.rootpath)??>${content.rootpath}<#else></#if>javadoc/index.html">Javadoc</a></li>
               </ul>
             </li>
