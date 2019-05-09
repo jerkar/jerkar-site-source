@@ -1,6 +1,6 @@
 ## Snapshot version
 
-* [Last build](binaries/jerkar-distrib.zip) 0.0.7
+* [Last snapshot build](https://oss.sonatype.org/content/repositories/snapshots/org/jerkar/core/0.7.0-SNAPSHOT/core-0.7.0-SNAPSHOT-distrib.zip) 
 
 ## Release versions
 

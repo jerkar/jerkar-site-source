@@ -1,13 +1,10 @@
 package jerkar.github.io;
 
-import org.jerkar.api.file.JkPathFile;
 import org.jerkar.api.file.JkPathTree;
 import org.jerkar.api.java.JkJavaProcess;
 import org.jerkar.api.system.JkLog;
-import org.jerkar.api.utils.JkUtilsPath;
 import org.jerkar.api.utils.JkUtilsString;
 import org.jerkar.api.utils.JkUtilsTime;
-
 import org.jerkar.tool.JkDoc;
 import org.jerkar.tool.JkInit;
 import org.jerkar.tool.JkRun;
@@ -42,24 +39,27 @@ class Build extends JkRun {
         makeJbakeTemp();
         addJbakeHeaders();
         jbake();
+        copyJerkarDoc();
         copyCurrentDist();
         copyCurrentJavadoc();
     }
 
     void makeJbakeTemp() {
         jbakeSrc.copyTo(temp);
-        Path doc = jerkarProjectPath.resolve("src/main/doc");
-        JkUtilsPath.copy(doc.resolve("Getting Started.md"), temp.resolve("content/getting_started.md"));
-        JkUtilsPath.copy(doc.resolve("FAQ.md"), temp.resolve("content/faq.md"));
     }
 
     void addJbakeHeaders() throws IOException {
-        for (Path file : JkPathTree.of(temp).goTo("content").andAccept("*.md").getFiles()) {
+        for (Path file : JkPathTree.of(temp).goTo("content").andMatching("*.md").getFiles()) {
             String content = jbakeHeader(file);
             byte[] previousContent = Files.readAllBytes(file);
             content = content + new String(previousContent, Charset.forName("UTF8"));
             Files.write(file, (content.getBytes(Charset.forName("UTF8"))), StandardOpenOption.CREATE);
         }
+    }
+
+    void copyJerkarDoc() {
+        JkPathTree docTree = JkPathTree.of(jerkarProjectPath.resolve("jerkar/output/distrib/doc"));
+        docTree.copyTo(targetSiteDir.resolve("doc"));
     }
 
     void copyCurrentDist() {
@@ -78,7 +78,7 @@ class Build extends JkRun {
     }
 
     void jbake() {
-        JkJavaProcess.of().withClasspath(jbakeToolDir.andAccept("lib/*.jar").getFiles())
+        JkJavaProcess.of().withClasspath(jbakeToolDir.andMatching("lib/*.jar").getFiles())
                 .runJarSync(jbakeToolDir.get("jbake-core.jar"), "jerkar/output/temp", "jerkar/output/site");
     }
 

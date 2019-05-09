@@ -21,7 +21,7 @@
         <p class="lead">Jerkar brings unrivaled <strong>ease</strong>, <strong>speed</strong>, <strong>flexibility</strong>, <strong>lightness</strong>, 
         		<strong>solidity</strong> to build <strong>Java or multi-techno projects</strong>.</p>
         <a class="btn btn-large btn-success" href="tell-me-more.html">Tell me more</a>
-        <a class="btn btn-large btn-success" href="getting_started.html">Getting Started</a>
+        <a class="btn btn-large btn-success" href="doc/Getting%20Started.html">Getting Started</a>
         <a class="btn btn-large btn-success" href="download.html">Download</a>
         <p></p>
         <div class="container nopad">
