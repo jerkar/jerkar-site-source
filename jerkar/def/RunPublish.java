@@ -1,6 +1,3 @@
-package jerkar.github.io;
-
-import org.eclipse.jgit.api.errors.GitAPIException;
 import org.jerkar.tool.JkInit;
 
 class RunPublish {
@@ -10,4 +7,5 @@ class RunPublish {
         System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "info");
         JkInit.instanceOf(Build.class, args).publish();
     }
+
 }

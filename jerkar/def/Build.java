@@ -1,7 +1,4 @@
-package jerkar.github.io;
-
 import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.transport.CredentialsProvider;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
@@ -39,9 +36,7 @@ class Build extends JkRun {
 
     public String gitUsername = "djeang";
 
-    public String gitPwd;
-
-
+    public String gitPwd = "";
 
     public static void main(String[] args) throws IOException {
         JkInit.instanceOf(Build.class, args).full();
@@ -110,18 +105,18 @@ class Build extends JkRun {
     }
 
     public void publish() {
-        JkPathTree gitTree = JkPathTree.of(this.gitRepoDir);
+        JkPathTree repoTree = JkPathTree.of(this.gitRepoDir);
         JkProcess git = JkProcess.of("git").withWorkingDir(gitRepoDir).withLogCommand(true).withFailOnError(true);
-        if (!gitTree.exists()) {
-            gitTree.createIfNotExist();
+        if (!repoTree.goTo(".git").exists()) {
+            repoTree.createIfNotExist();
             git.andParams("clone", gitUrl, ".").runSync();
         } else {
             git.andParams("pull").runSync();
         }
-        gitTree.andMatching(false, ".git/**").deleteContent();
-        JkPathTree.of(targetSiteDir).copyTo(gitTree.getRoot());
-        git.andParams("add", ".").runSync();
-        git.andParams("commit", "-m", "Doc").withFailOnError(false).runSync();
+        repoTree.andMatching(false, ".git/**").deleteContent();
+        JkPathTree.of(targetSiteDir).copyTo(repoTree.getRoot());
+        git.andParams("add", "*").runSync();
+        git.andParams("commit", "-am", "Doc").withFailOnError(false).runSync();
         git.andParams("push").runSync();
     }
 
