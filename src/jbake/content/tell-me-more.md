@@ -46,91 +46,97 @@ As said, with Jerkar, build definitions are **plain old java classes**. This bar
 
 You just need to add such a class in your project in order to make it buildable by Jerkar. To build a project, just execute `jerkar` in a shell at its root folder. 
 
-<div class="container">
-	<div class="col-md-6">
-<pre><code>
-class BuildSampleClassic extends JkJavaBuild {
+```java
+class TaskBuild extends JkRun {
 	
-    @Override protected JkDependencies dependencies() {
-        return JkDependencies.builder() 
-            .on(GUAVA, "18.0")  
-            .on(JERSEY_SERVER, "1.19")
-            .on("com.orientechnologies:orientdb-client:2.0.8")
-            .on(JUNIT, "4.11").scope(TEST)
-            .on(MOCKITO_ALL, "1.9.5").scope(TEST).build();
+    @JkDoc("Run test in a forked process if true.")
+    boolean forkTest;
+    
+    private JkPathTree src = getBaseTree().goTo("src");
+    private Path classDir = getOutputDir().resolve("classes");
+    private Path jarFile = getOutputDir().resolve("capitalizer.jar");
+    private JkClasspath classpath = JkClasspath.of(getBaseTree()
+        .andMatching("libs/compile/*.jar").getFiles());
+    private Path testSrc = getBaseDir().resolve("test");
+    private Path testClassDir = getOutputDir().resolve("test-classes");
+    private JkClasspath testClasspath = classpath.and(getBaseTree()
+        .andMatching("libs/test/*.jar").getFiles());
+    private Path reportDir = getOutputDir().resolve("junitRreport");
+    
+    public void doDefault() {
+        clean();
+        compile();
+        junit();
+        jar();
+    }
+    
+    public void compile() {
+        JkJavaCompiler.ofJdk().compile(JkJavaCompileSpec.of()
+            .setClasspath(classpath)
+            .addSources(src)
+            .setOutputDir(classDir));
+        src.andMatching(false,"**/*.java").copyTo(classDir);  /// copy resources
+    }
+    
+    public void jar() {
+        JkManifest.ofEmpty().addMainClass("org.jerkar.samples.RunClass")
+            .writeToStandardLocation(classDir);
+        JkPathTree.of(classDir).zipTo(jarFile);
+    }
+    
+    private void compileTest() {
+        JkJavaCompiler.ofJdk().compile(JkJavaCompileSpec.of()
+            .setClasspath(testClasspath)
+            .addSources(testSrc)
+            .setOutputDir(testClassDir));
+        src.andMatching(false,"**/*.java").copyTo(testClassDir);  /// copy test resources
+    }
+    
+    public void junit() {
+        compileTest();
+        JkUnit.of()
+            .withReportDir(reportDir).withReport(JunitReportDetail.FULL)
+            .withForking(forkTest)
+            .run(testClasspath.and(classDir), JkPathTree.of(testClassDir));
     }
     
     public static void main(String[] args) {
-        JkInit.instanceOf(BuildSampleClassic.class, args).doDefault();
-    }	
-}
-</code></pre>
-	<legend class="small">No more is necessary for building and publishing your artifact. Group and artifact name are inferred from the project folder name and version is defaulted to 'trunk-SNAPSHOT' unless injected at invocation time. <br/>
-	It's possible to launch build class directly within the IDE thanks to the main method.</legend>
-	</div>
-	<div class="col-md-6">
-<pre><code>
-class MavenStyleBuild extends JkJavaBuild {
-	
-    @Override public JkModuleId moduleId() {
-        return JkModuleId.of("org.jerkar", "script-samples");
-    }
-
-    @Override protected JkVersion version() {
-        return JkVersion.name("0.3-SNAPSHOT");
-    }
-
-    @Override protected JkDependencies dependencies() {
-        return JkDependencies.builder()
-            .on(GUAVA, "18.0") 
-            .on(JERSEY_SERVER, "1.19")
-            .on("com.orientechnologies:orientdb-client:2.0.8")
-            .on(JUNIT, "4.11").scope(TEST)
-            .on(MOCKITO_ALL, "1.9.5").scope(TEST).build();
+        JkInit.instanceOf(TaskBuild.class, args).doDefault();
     }
 
 }
-</code></pre>
-	<legend class="small">Same as previous but explicitly define group, artifact and current version.</legend> 
-	</div>
-	<div class="col-md-6">
-<pre><code>
-class AntStyleBuild extends JkBuild {
-	
-    String name = "myProject";
-    File src = file("src");
-    File buildDir = file("build/output");
-    File classDir = new File(buildDir, "classes");
-    JkClasspath classpath = JkClasspath.of(baseDir().include("libs/*.jar"));
-    File reportDir = new File(buildDir, "junitRreport");
-	
-    @Override public void doDefault() {
-        clean();compile();test();
+```
+Ant like style to build a Java project. All public no-arg returning void are invokable 
+from the command line. Executing `jerkar compile jar` compiles source code and creates a Jar file.
+
+```java
+class ClassicBuild extends JkRun {
+
+    JkPluginJava javaPlugin = getPlugin(JkPluginJava.class);
+
+    @Override
+    protected void setup() {
+        JkJavaProject project = javaPlugin.getProject();
+        project.setVersionedModule("org.jerkar:examples-java-template", "1.0");
+        project.getCompileSpec().setSourceAndTargetVersion(JkJavaVersion.V8);
+        project.addDependencies(JkDependencySet.of()
+                .and("com.google.guava:guava:18.0")
+                .and("junit:junit::4.12"));
     }
-	
-    public void compile() {
-        JkJavaCompiler.outputtingIn(classDir).withClasspath(classpath).andSourceDir(src).compile();
-        JkFileTree.of(src).exclude("**/*.java").copyTo(classDir);
-    }
-		
-    public void test() {
-        JkUnit.of(classpath.and(classDir))
-            .withClassesToTest(JkFileTree.of(classDir).include("**/*Test.class"))
-            .withReportDir(reportDir).run();
+
+    public static void main(String[] args) {
+        JkInit.instanceOf(ClassicBuild.class, args).javaPlugin.clean().pack();
     }
 
 }
-</code></pre>
-	<legend class="small">This build class does not extend JkJavaBuild. As such it explicitly defines what does the build.</legend> 
-	</div>
-	<div class="col-md-6">
-<pre><code>
-</code></pre>
-	<legend class="small">If the project embeds all its dependency jar files locally, no build class/configuration is needed at all :-)</legend>
-	</div>
-</div>
+```
 
-Plugin mechanism allows to add behavior without modifying build classes. `jerkar sonar# jacoco# doPublish` processes test coverage along SonarQube analysis prior publishing artifacts. 
+Java plugin helps to build Java project with mi minimal typing. 
+Executing `jerkar java#pack java#publish` invokes `pack`and `publish` methods on the java plugin.
+<br/>
+
+Jerkar also allows to activate plugins on the fly without explicly instantiating it in ne build class : 
+`jerkar sonar# jacoco# java#pack` processes test coverage along SonarQube analysis prior publishing artifacts. 
 
 
 ## Multi-techno projects

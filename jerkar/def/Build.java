@@ -2,6 +2,7 @@ import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.transport.CredentialsProvider;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
+import org.jerkar.api.file.JkPathFile;
 import org.jerkar.api.file.JkPathTree;
 import org.jerkar.api.java.JkJavaProcess;
 import org.jerkar.api.system.JkLog;
@@ -50,7 +51,6 @@ class Build extends JkRun {
                     .andMatching(false, JkConstants.DEF_BIN_DIR + "/**")
                     .andMatching(false, gitRepoDir.getFileName().toString())
                     .deleteContent();
-
         }
     }
 
@@ -79,8 +79,8 @@ class Build extends JkRun {
     }
 
     void copyJerkarDoc() {
-        JkPathTree docTree = JkPathTree.of(jerkarProjectPath.resolve("jerkar/output/distrib/doc"));
-        docTree.copyTo(targetSiteDir.resolve("doc"));
+        JkPathFile.of(jerkarProjectPath.resolve("jerkar/output/distrib/doc/reference.html"))
+                .copyToDir(targetSiteDir.resolve("doc"));
     }
 
     void copyCurrentJavadoc() {
@@ -132,7 +132,6 @@ class Build extends JkRun {
         }
         git.rm().setCached(false).addFilepattern("jerkar/output/gitRepo/*").call();
         JkPathTree.of(gitRepoDir).andMatching(false, ".git/**").deleteContent();
-        //JkPathTree.of(targetSiteDir).copyTo(gitRepoDir);
         git.add().addFilepattern("jerkar/output/gitRepo/*").call();
         RevCommit revCommit = git.commit().setMessage("doc").call();
         System.out.println(revCommit.getFullMessage());
