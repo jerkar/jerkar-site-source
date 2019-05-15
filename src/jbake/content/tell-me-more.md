@@ -12,7 +12,7 @@
 * Swiss-knife library for performing all kind of build related stuff as file and I/O  manipulation, logging, PGP signing, external tool launcher, ...
 * Multi-level configuration to fit in enterprise environment
 * Hierarchical logs
-* Ability to rely on convention only (no build script needed at all) or get build information from IDE meta-data
+* Ability to rely on convention only (no build script needed at all)
 * Facility to migrate *Maven* projects
 * Scaffolding feature for creating projects from scratch
  
@@ -40,59 +40,71 @@ As said, with Jerkar, build definitions are **plain old java classes**. This bar
 * scripts can directly leverage of any Java **3rd party libraries** without needing to wrap it in a plugin or a specific component
 * it's straightforward to **extend**
 * **refactoring** build definition is easy and safe (thanks to statically typed nature of Java) 
-* build definitions leverage the regular Java mechanisms (Inheritance, composition, jar module dependency) to **re-use build elements** or share settings
+* build scripts leverage the regular Java mechanisms (Inheritance, composition, jar module dependency) to **re-use build elements** or share settings
 
-## See it !
+## How does it look like ?
 
-You just need to add such a class in your project in order to make it buildable by Jerkar. To build a project, just execute `jerkar` in a shell at its root folder. 
+All related Jerkar files lies within the project to build, under 'jerkar' diectory.
+
+```
+myproject
+   + jerkar             
+      + def             <-----  Java code that build your project goes here (this should be identifed as a java source folder in your IDE)
+         + Build.java   
+      + output          <---- Build artifacts are generated here 
+   + src                <---- Sources of the project to build according build class defined below.
+   ...
+``` 
+
+<br/>The following *Build.java* mimics a Ant file defining various Jave build tasks. Every public no-args void methods is callable from the command line.
+Moreover, public fields value can be set from command line.
+For instance : `jerkar clean compile test -forkTest=true` will inject `true` value to *forkTest* field then invoke *clean*, *compile* and *test* methods. 
 
 ```java
-class TaskBuild extends JkRun {
+@JkImport("commons-httpclient:commons-httpclient:3.1")  // Import HttpClient and its deps in script classpath
+class Build extends JkRun {
 	
     @JkDoc("Run test in a forked process if true.")
-    boolean forkTest;
+    public boolean forkTest;
     
     private JkPathTree src = getBaseTree().goTo("src");
     private Path classDir = getOutputDir().resolve("classes");
     private Path jarFile = getOutputDir().resolve("capitalizer.jar");
-    private JkClasspath classpath = JkClasspath.of(getBaseTree()
-        .andMatching("libs/compile/*.jar").getFiles());
+    private JkClasspath classpath = JkClasspath.of(getBaseTree()).andMatching("libs/compile/*.jar").getFiles());
+    private JkClasspath testClasspath = classpath.and(getBaseTree().andMatching("libs/test/*.jar").getFiles());
     private Path testSrc = getBaseDir().resolve("test");
     private Path testClassDir = getOutputDir().resolve("test-classes");
-    private JkClasspath testClasspath = classpath.and(getBaseTree()
-        .andMatching("libs/test/*.jar").getFiles());
     private Path reportDir = getOutputDir().resolve("junitRreport");
     
-    public void doDefault() {
-        clean();
-        compile();
-        junit();
-        jar();
+    public void runDefault() {
+        clean(); compile(); test(); jar();
     }
     
     public void compile() {
-        JkJavaCompiler.ofJdk().compile(JkJavaCompileSpec.of()
-            .setClasspath(classpath)
-            .addSources(src)
-            .setOutputDir(classDir));
+        JkJavaCompiler.ofJdk().compile(
+            JkJavaCompileSpec.of()
+                .setClasspath(classpath)
+                .addSources(src)
+                .setOutputDir(classDir));
         src.andMatching(false,"**/*.java").copyTo(classDir);  /// copy resources
     }
     
+    @JkDoc("Create jar file on already compiled classes.")
     public void jar() {
-        JkManifest.ofEmpty().addMainClass("org.jerkar.samples.RunClass")
-            .writeToStandardLocation(classDir);
+        JkManifest.ofEmpty().addMainClass("org.jerkar.samples.RunClass").writeToStandardLocation(classDir);
         JkPathTree.of(classDir).zipTo(jarFile);
     }
     
     private void compileTest() {
-        JkJavaCompiler.ofJdk().compile(JkJavaCompileSpec.of()
-            .setClasspath(testClasspath)
-            .addSources(testSrc)
-            .setOutputDir(testClassDir));
+        JkJavaCompiler.ofJdk().compile(
+            JkJavaCompileSpec.of()
+                .setClasspath(testClasspath)
+                .addSources(testSrc)
+                .setOutputDir(testClassDir));
         src.andMatching(false,"**/*.java").copyTo(testClassDir);  /// copy test resources
     }
     
-    public void junit() {
+    public void test() {
         compileTest();
         JkUnit.of()
             .withReportDir(reportDir).withReport(JunitReportDetail.FULL)
@@ -100,28 +112,38 @@ class TaskBuild extends JkRun {
             .run(testClasspath.and(classDir), JkPathTree.of(testClassDir));
     }
     
+    @JkDoc("Performs some http client tasks")
+    public void seleniumLoadTest() throws IOException {
+        HttpClient client = new HttpClient();
+        GetMethod getMethod = new GetMethod("http://my.url");
+        client.executeMethod(getMethod);
+        // ....
+    }
+    
     public static void main(String[] args) {
-        JkInit.instanceOf(TaskBuild.class, args).doDefault();
+        JkInit.instanceOf(TaskBuild.class, args).runDefault();
     }
 
 }
 ```
-Ant like style to build a Java project. All public no-arg returning void are invokable 
-from the command line. Executing `jerkar compile jar` compiles source code and creates a Jar file.
+
+<br/>The example below shows how Java plugin helps to build Java project with minimal typing. This plugin simply exposes a pre-configured `JkJavaProject` instance that you can reshape.
+Executing `jerkar java#pack java#publish` invokes *pack* and *publish* methods on the Java plugin. This leads in compilation, test compilation, test executions, packaging jars and publish artifacts to default Maven repositoy.
 
 ```java
-class ClassicBuild extends JkRun {
+class JavaPluginBuild extends JkRun {
 
-    JkPluginJava javaPlugin = getPlugin(JkPluginJava.class);
+    final JkPluginJava javaPlugin = getPlugin(JkPluginJava.class);
 
     @Override
     protected void setup() {
         JkJavaProject project = javaPlugin.getProject();
-        project.setVersionedModule("org.jerkar:examples-java-template", "1.0");
+        project.setVersionedModule("org.jerkar:examples-java-template", "1.0-SNAPSHOT");
         project.getCompileSpec().setSourceAndTargetVersion(JkJavaVersion.V8);
         project.addDependencies(JkDependencySet.of()
                 .and("com.google.guava:guava:18.0")
-                .and("junit:junit::4.12"));
+                .and("junit:junit:4.12", TEST)
+        );
     }
 
     public static void main(String[] args) {
@@ -131,11 +153,7 @@ class ClassicBuild extends JkRun {
 }
 ```
 
-Java plugin helps to build Java project with mi minimal typing. 
-Executing `jerkar java#pack java#publish` invokes `pack`and `publish` methods on the java plugin.
-<br/>
-
-Jerkar also allows to activate plugins on the fly without explicly instantiating it in ne build class : 
+<br/>Jerkar also allows to activate plugins on the fly without explicitly instantiating it in the build class : 
 `jerkar sonar# jacoco# java#pack` processes test coverage along SonarQube analysis prior publishing artifacts. 
 
 

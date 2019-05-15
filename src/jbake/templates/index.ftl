@@ -19,16 +19,29 @@
 			<strong>solidity</strong> to build <strong>Java</strong> or <strong>multi-techno</strong> projects.</p>
         <a class="btn btn-large btn-success" href="tell-me-more.html">Tell me more</a>
         <a class="btn btn-large btn-success" href="https://github.com/jerkar/jerkar/blob/master/org.jerkar.core/src/main/doc/Getting%20Started.md">Getting Started</a>
+		 <a class="btn btn-large btn-success" href="https://github.com/jerkar/jerkar-examples">Working Examples</a>
         <a class="btn btn-large btn-success" href="download.html">Download</a>
         <p></p>
         <div class="container nopad">
-	        <div class="alert alert-info col-md-7">
+	        <div class="alert alert-info col-md-12">
 				<strong>Latest News</strong> <br/>
-				2019-05-14 : Release 0.7.0.RC1 is out. Completely reworked API around plugins, lambdas and java.nio.
-				             Older versions are no more maintained. </a> <br/>
+				<ul>
+					<li>2019-05-14 : Release 0.7.0.RC1 is out. Completely reworked API around plugins, lambdas and java.nio.
+				             Older versions are no more maintained.
+					</li>
+				</ul>
 			</div>
-			<div class="alert col-md-1"></div>
 		</div>
+		 <div class="container nopad">
+			 <div class="alert alert-info col-md-12">
+				 <strong>Next steps</strong> <br/>
+				 <ul>
+					 <li>Release Spingboot and ProtocolBuffer Plugins</li>
+					 <li>Make Jerkar run on Java9+ (classpath scanning issue)</li>
+					 <li>Jerkar plugin for Intellij (IDE implementation plugin)</li>
+				 </ul>
+			 </div>
+		 </div>
       </div>
       
        <div class="github hidden-phone hidden-tablet">

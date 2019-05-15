@@ -11,6 +11,7 @@ import org.jerkar.api.utils.JkUtilsString;
 import org.jerkar.api.utils.JkUtilsTime;
 import org.jerkar.tool.*;
 
+import java.awt.*;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -63,6 +64,7 @@ class Build extends JkRun {
         jbake();
         copyJerkarDoc();
         copyCurrentJavadoc();
+        //Desktop.getDesktop().open(targetSiteDir.resolve("index.html").toFile());
     }
 
     void makeJbakeTemp() {
@@ -79,12 +81,12 @@ class Build extends JkRun {
     }
 
     void copyJerkarDoc() {
-        JkPathFile.of(jerkarProjectPath.resolve("jerkar/output/distrib/doc/reference.html"))
-                .copyToDir(targetSiteDir.resolve("doc"));
+        JkPathTree.of(jerkarProjectPath.resolve("jerkar/output/distrib/doc"))
+                .andMatching("reference.html", "style/**/*").copyTo(targetSiteDir.resolve("doc"));
     }
 
     void copyCurrentJavadoc() {
-        JkPathTree jerkarDistJavadoc = JkPathTree.of(jerkarProjectPath).goTo("org.jerkar.core/jerkar/output/javadoc");
+        JkPathTree jerkarDistJavadoc = JkPathTree.of(jerkarProjectPath).goTo("jerkar/output/javadoc");
         if (jerkarDistJavadoc.exists()) {
             jerkarDistJavadoc.copyTo(targetSiteDir.resolve("javadoc"));
         } else {
