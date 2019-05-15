@@ -26,7 +26,7 @@
 	        <div class="alert alert-info col-md-12">
 				<strong>Latest News</strong> <br/>
 				<ul>
-					<li>2019-05-14 : Release 0.7.0.RC1 is out. Completely reworked API around plugins, lambdas and java.nio.
+					<li>2019-05-14 : Release 0.7.0.RC1 is out. Completely reworked API around <strong>plugins</strong>, <strong>lambdas</strong> and <strong>java.nio</strong>.
 				             Older versions are no more maintained.
 					</li>
 				</ul>

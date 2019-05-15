@@ -70,11 +70,20 @@ class Build extends JkRun {
     private JkPathTree src = getBaseTree().goTo("src");
     private Path classDir = getOutputDir().resolve("classes");
     private Path jarFile = getOutputDir().resolve("capitalizer.jar");
-    private JkClasspath classpath = JkClasspath.of(getBaseTree()).andMatching("libs/compile/*.jar").getFiles());
-    private JkClasspath testClasspath = classpath.and(getBaseTree().andMatching("libs/test/*.jar").getFiles());
     private Path testSrc = getBaseDir().resolve("test");
     private Path testClassDir = getOutputDir().resolve("test-classes");
     private Path reportDir = getOutputDir().resolve("junitRreport");
+    private JkClasspath classpath;
+    private JkClasspath testClasspath;
+    
+    Build() {  // Here, classpath is made of local jars + jars hosted in Maven Central
+        JkResolveResult deps = JkDependencyResolver.of(JkRepo.ofMavenCentral()).resolve(JkDependencySet.of()
+            .and("org.hibernate:hibernate-entitymanager:5.4.2.Final")
+            .and("com.h2database:h2:1.4.199"));
+        List<Path> localJars = getBaseTree().andMatching("libs/compile/*.jar").getFiles();
+        classpath = JkClasspath.of(localJars).and(deps.getFiles());   
+        testClasspath = classpath.and(getBaseTree().andMatching("libs/test/*.jar").getFiles());
+    }
     
     public void runDefault() {
         clean(); compile(); test(); jar();
