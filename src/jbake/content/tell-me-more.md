@@ -61,7 +61,7 @@ Moreover, public fields value can be set from command line.
 For instance : `jerkar clean compile test -forkTest=true` will inject `true` value to *forkTest* field then invoke *clean*, *compile* and *test* methods. 
 
 ```java
-@JkImport("commons-httpclient:commons-httpclient:3.1")  // Import HttpClient and its deps in script classpath
+@JkImport("commons-httpclient:commons-httpclient:3.1")  // Import HttpClient and its deps for usage in this script
 class Build extends JkRun {
 	
     @JkDoc("Run test in a forked process if true.")
