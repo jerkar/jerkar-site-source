@@ -26,6 +26,7 @@
 	        <div class="alert alert-info col-md-12">
 				<strong>Latest News</strong> <br/>
 				<ul>
+					<li>2019-05_18 : Springboot plugin 2.0.0.RC1 and Protobuf plugin 0.7.0.RC1 are out.</li>
 					<li>2019-05-14 : Release 0.7.0.RC1 is out. Completely reworked API around <strong>plugins</strong>, <strong>lambdas</strong> and <strong>java.nio</strong>.
 				             Older versions are no more maintained.
 					</li>
@@ -36,7 +37,6 @@
 			 <div class="alert alert-info col-md-12">
 				 <strong>Next steps</strong> <br/>
 				 <ul>
-					 <li>Release Spingboot and ProtocolBuffer Plugins</li>
 					 <li>Make Jerkar run on Java9+ (classpath scanning issue)</li>
 					 <li>Jerkar plugin for Intellij (IDE implementation plugin)</li>
 				 </ul>
